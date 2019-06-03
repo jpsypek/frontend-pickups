@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './App.css'
 import UserLogin from './Components/UserLogin/UserLogin'
+import NewUserForm from './Components/NewUserForm/NewUserForm'
 
 class App extends Component {
   constructor() {
@@ -8,6 +9,7 @@ class App extends Component {
     this.state = {
       loggedIn: false,
       showLogIn: false,
+      showNewUserForm: false,
       userId: ""
     }
   }
@@ -18,16 +20,21 @@ class App extends Component {
     }
   }
 
-  logIn = (userId) => {
-    this.setState({userId})
-    this.setState({loggedIn: !this.state.loggedIn})
+  logIn = (userId, token) => {
+    localStorage.setItem('pickUpUser', userId)
+    localStorage.setItem('pickUpLogin', token)
+    this.setState({
+      userId,
+      showLogIn: false,
+      loggedIn: true})
   }
 
   logOut = () => {
     localStorage.clear()
     this.setState({
       loggedIn: false,
-      userId: ""
+      userId: "",
+      showLogIn: false
     })
   }
 
@@ -35,18 +42,27 @@ class App extends Component {
     this.setState({showLogIn: !this.state.showLogIn})
   }
 
+  toggleShowNewUserForm = () => {
+    this.setState({showNewUserForm: !this.state.showNewUserForm})
+  }
+
   render() {
-    const {loggedIn, showLogIn} = this.state
+    const {loggedIn, showLogIn, showNewUserForm} = this.state
 
     return (
       <div>
         <header>
-          {showLogIn ?
-            <button onClick={this.toggleShowLogIn}>Log In</button> :
-            <UserLogin logIn={this.logIn}/>}
+          <h1 className="app-name">Pick Up Sports!</h1>
+          {loggedIn ?
+            <button className="button log-out user-credentials" onClick={this.logOut}>Log Out</button> :
+            <div className="user-credentials">
+              <button onClick={this.toggleShowLogIn}>Log In</button>
+              <button onClick={this.toggleShowNewUserForm} className="create-act button">Create Account</button>
+              <NewUserForm showNewUserForm={showNewUserForm} toggleShowNewUserForm={this.toggleShowNewUserForm} handleLogIn={this.handleLogIn}/>
+            </div>}
+          {showLogIn ? <UserLogin logIn={this.logIn} /> : null}
         </header>
-        {loggedIn ? <h1>You're logged in!</h1> : <h1>Log in first!</h1>}
-        <button className="button log-out" onClick={this.logOut}>Log Out</button>
+        {loggedIn ? <p>You're logged in!</p> : <p>Log in first!</p>}
       </div>
     )
   }
