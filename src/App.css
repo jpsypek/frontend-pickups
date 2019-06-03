@@ -6,7 +6,7 @@ body {
 }
 
 header {
-  background-color: rgb(100,100,100, 1);
+  background-color: rgb(60,60,60, 1);
   position: fixed;
   top: 0;
   width: 100%;
@@ -20,11 +20,6 @@ header {
 }
 h1 {
   text-align: center;
-}
-
-p {
-  position: relative;
-  top: 20rem
 }
 
 .user-credentials {
@@ -81,4 +76,44 @@ textarea {
 input, textarea {
   padding: 3px;
   margin: 5px
+}
+
+/*  NAvBar*/
+nav {
+  position: fixed;
+  top: 5rem;
+  width: 100%;
+  z-index: 90
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 1rem;
+  overflow: hidden;
+  background-color: rgba(25,65,137, 0.85);
+}
+
+li {
+  float: center;
+  display: inline;
+  /* padding-top: 8rem; */
+  margin: 1rem 0.5rem
+}
+
+li a {
+  display: inline;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: rgba(25,65,137, 1);
+}
+
+.containers {
+  position: relative;
+  top: 10rem
 }
