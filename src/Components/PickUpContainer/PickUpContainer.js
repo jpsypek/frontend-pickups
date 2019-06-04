@@ -1,4 +1,5 @@
 import React from 'react'
+import ApiConfig from '../../google_api'
 
 const PickUpContainer = (props) => {
 
@@ -6,7 +7,7 @@ const PickUpContainer = (props) => {
 
   return(
     <div>
-      {loggedIn ? <p>Coming Soon!</p> : <p>You must be logged in to access this portion of the site.</p>}
+      {loggedIn ? <p>{ApiConfig.googleAPI}</p> : <p>You must be logged in to access this portion of the site.</p>}
     </div>
   )
 }
