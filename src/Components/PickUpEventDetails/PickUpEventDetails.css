@@ -1,0 +1,40 @@
+.event-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0 auto;
+  transform: translate(-50%, -50%);
+  width:90000px;
+  height: 90000px;
+  background: rgba(0, 0, 0, 0.6);
+  display: block;
+  z-index: 45
+}
+
+.event-modal-main {
+  position: absolute;
+  background: white;
+  width: auto;
+  height: auto;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  padding: 2rem 5rem;
+  border-radius: 20px;
+  border-style: solid;
+  border-color: rgba(25,65,137);
+  border-width: 4px;
+  font-size: 1rem;
+  text-align: left;
+  margin: auto;
+  z-index: 50
+}
+
+.event-modal-label {
+  display: block;
+}
+.event-modal-input {
+  display: block;
+  width: 400px;
+  text-align: center;
+}

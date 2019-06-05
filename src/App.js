@@ -19,7 +19,7 @@ class App extends Component {
 
   componentDidMount = () => {
     if (localStorage.getItem('pickUpLogin')) {
-      this.logIn(localStorage.getItem('pickUpUser'))
+      this.logIn(localStorage.getItem('pickUpUser'), localStorage.getItem('pickUpLogin'))
     }
   }
 
@@ -59,7 +59,7 @@ class App extends Component {
             : <div className="user-credentials">
                 <button onClick={this.toggleShowLogIn}>Log In</button>
                 <button onClick={this.toggleShowNewUserForm} className="create-act button">Create Account</button>
-                <NewUserForm showNewUserForm={showNewUserForm} toggleShowNewUserForm={this.toggleShowNewUserForm} handleLogIn={this.handleLogIn}/>
+                <NewUserForm showNewUserForm={showNewUserForm} toggleShowNewUserForm={this.toggleShowNewUserForm} logIn={this.logIn}/>
               </div>}
           { showLogIn ? <UserLogin logIn={this.logIn}/> : null}
         </header>

@@ -45,10 +45,10 @@ class NewUserForm extends Component {
   }
 
   newUserEvent = (data) => {
-    const {toggleShowNewUserForm, handleLogIn} = this.props
+    const {toggleShowNewUserForm, logIn} = this.props
     if (data.user) {
       toggleShowNewUserForm()
-      handleLogIn(data)
+      logIn(data.user.id, data.jwt)
     } else {
       this.setState({
         email: "",

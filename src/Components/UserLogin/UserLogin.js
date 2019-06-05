@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import NewUserForm from '../NewUserForm/NewUserForm'
 import './UserLogin.css'
 
 class UserLogin extends Component {
@@ -55,7 +54,7 @@ class UserLogin extends Component {
     }
 
   render() {
-    const {notFound, showNewUserForm, inputEmail, inputPassword} = this.state
+    const {notFound, inputEmail, inputPassword} = this.state
 
     return (
       <div>
