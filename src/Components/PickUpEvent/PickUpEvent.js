@@ -18,10 +18,20 @@ class PickUpEvent extends Component {
   }
 
   updateUsers = (user) => {
+    console.log(this.state.users)
     this.setState({
       users: [...this.state.users, user]
     })
+    console.log(this.state.users)
+    this.props.getEvents()
   }
+
+  removeUser = (userId) => {
+    const users = this.state.users.filter((user) => user.id !== userId)
+    this.setState({users})
+    this.props.getEvents()
+  }
+
   render () {
     const icon = () => {
       switch (this.props.sport) {
@@ -38,7 +48,7 @@ class PickUpEvent extends Component {
       <div className="marker" onClick={this.toggleDetailsShow}>
         <img alt="event location" src={icon()} />
         {showDetails ?
-          <PickUpEventDetails {...this.state} updateUsers={this.updateUsers} toggleDetailsShow={this.toggleDetailsShow}/> :
+          <PickUpEventDetails {...this.state} updateUsers={this.updateUsers} removeUser={this.removeUser} toggleDetailsShow={this.toggleDetailsShow}/> :
           null}
       </div>
     )

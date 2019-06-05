@@ -8,11 +8,15 @@ class PickUpContainer extends Component  {
   constructor(props) {
     super(props)
     this.state = {
-      events: [1]
+      events: [],
     }
   }
 
   componentDidMount = () => {
+    this.getEvents()
+  }
+
+  getEvents = () => {
     if (this.props.loggedIn) {
       fetch('http://localhost:3000/api/v1/events', {
         method: 'GET',
@@ -28,9 +32,11 @@ class PickUpContainer extends Component  {
 
   render () {
     const {loggedIn} = this.props
+    const {events} = this.state
     const API_KEY = `${process.env.REACT_APP_MAPS_API_KEY}`
-    const eventItems = this.state.events.map((event) => {
-      return <PickUpEvent key={event.id + Date.now()} lat={event.latitude} lng={event.longitude} {...event} />
+    const eventItems = events.map((event) => {
+      return <PickUpEvent key={event.id + Date.now()} lat={event.latitude} getEvents={this.getEvents}
+        lng={event.longitude} updateLatLng={this.updateLatLng} {...event} />
     })
 
     return(

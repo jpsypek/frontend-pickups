@@ -71,7 +71,7 @@ class App extends Component {
                   <NavLink exact={true} to="/">Home</NavLink>
                 </li>
                 <li>
-                  <NavLink exact={true} to="/pickups">Pick Up Games</NavLink>
+                  <NavLink exact={true} to="/pickups">All Pick Up Games</NavLink>
                 </li>
               </ul>
             </nav>
