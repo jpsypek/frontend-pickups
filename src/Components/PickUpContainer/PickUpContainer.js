@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import GoogleMapReact from 'google-map-react'
+import GoogleMap from 'google-map-react'
 import './PickUpContainer.css'
 import PickUpEvent from '../PickUpEvent/PickUpEvent'
 import EventFilter from '../EventFilter/EventFilter'
@@ -45,7 +45,7 @@ class PickUpContainer extends Component  {
           <div>
             <EventFilter />
             <div id="events-map">
-              <GoogleMapReact
+              <GoogleMap
                   bootstrapURLKeys={{ key: API_KEY }}
                   defaultCenter={{
                     lat: 39.71,
@@ -55,7 +55,7 @@ class PickUpContainer extends Component  {
                   yesIWantToUseGoogleMapApiInternals
               >
               {eventItems}
-          </GoogleMapReact>
+          </GoogleMap>
         </div>
         </div>:
         <p>You must log in to access this content</p>}

@@ -59,7 +59,7 @@ class PickUpEventDetails extends Component {
 
     return(
       <div ref="modal" className="event-modal">
-        <div  className="event-modal-main">
+        <div className="event-modal-main">
           <p>Sport: {sport}</p>
           <p>Time: {this.props.time}</p>
           <p>Day: {day}</p>
