@@ -5,6 +5,7 @@ import UserLogin from './Components/UserLogin/UserLogin'
 import NewUserForm from './Components/NewUserForm/NewUserForm'
 import HomePage from './Components/HomePage/HomePage'
 import PickUpContainer from './Components/PickUpContainer/PickUpContainer'
+import NewPickUpForm from './Components/NewPickUpForm/NewPickUpForm'
 
 class App extends Component {
   constructor() {
@@ -73,11 +74,15 @@ class App extends Component {
                 <li>
                   <NavLink exact={true} to="/pickups">All Pick Up Games</NavLink>
                 </li>
+                <li>
+                  <NavLink exact={true} to="/addpickup">Create a New Pick Up Game</NavLink>
+                </li>
               </ul>
             </nav>
             <div className="containers">
               <Route exact={true} path="/" component={() => <HomePage loggedIn={loggedIn}/>} />
               <Route path="/pickups" component={() => <PickUpContainer loggedIn={loggedIn}/>} />
+              <Route path="/addpickup" component={() => <NewPickUpForm loggedIn={loggedIn}/>} />
             </div>
           </div>
         </Router>

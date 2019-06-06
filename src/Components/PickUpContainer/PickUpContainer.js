@@ -15,6 +15,11 @@ class PickUpContainer extends Component  {
     }
   }
 
+  static defaultProps = {
+    center: {lat: 39.71, lng: -104.97},
+    zoom: 12
+  }
+
   componentDidMount = () => {
     this.getEvents()
   }
@@ -80,11 +85,8 @@ class PickUpContainer extends Component  {
             <div id="events-map">
               <GoogleMap
                   bootstrapURLKeys={{ key: API_KEY }}
-                  defaultCenter={{
-                    lat: 39.71,
-                    lng: -104.97
-                  }}
-                  defaultZoom={12.5}
+                  defaultCenter={this.props.center}
+                  defaultZoom={this.props.zoom}
                   yesIWantToUseGoogleMapApiInternals
               >
               {eventItems}

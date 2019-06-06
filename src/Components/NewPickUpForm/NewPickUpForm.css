@@ -1,0 +1,11 @@
+.new-pickup-form input, select{
+  display: block;
+  margin: 0 auto;
+}
+
+#new-event-map {
+  width: 30%;
+  height: 30vh;
+  margin: 0 auto;
+  z-index: 0
+}
