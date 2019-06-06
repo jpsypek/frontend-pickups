@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import './PickUpEventDetails.css'
 
 class PickUpEventDetails extends Component {
-  constructor(props) {
-    super(props)
-    this.myRef = React.createRef()
-  }
+
+
   addUserToEvent = () => {
     const {id, user_events} = this.props
     const userId = parseInt(localStorage.getItem("pickUpUser"))
@@ -25,13 +23,13 @@ class PickUpEventDetails extends Component {
         })
       })
       .then(response => response.json())
-  	  .then(data => this.props.updateUsers(data.user))
+  	  .then(data => this.props.updateUsers(id, data.user))
       .catch(error => console.error(error))
     }
   }
 
   removeUserFromEvent = () => {
-    const {user_events} = this.props
+    const {id, user_events} = this.props
     const userId = parseInt(localStorage.getItem("pickUpUser"))
     const user_event = user_events.find((user_event) => user_event.user_id === userId)
     if (user_event) {
@@ -44,13 +42,17 @@ class PickUpEventDetails extends Component {
       },
       body: JSON.stringify({id: user_event.id})
       })
-    .then(() => this.props.removeUser(parseInt(localStorage.getItem("pickUpUser"))))
+    .then(() => this.props.removeUser(id, parseInt(localStorage.getItem("pickUpUser"))))
     .catch(error => console.error(error))
     }
   }
 
   componentDidMount = () => {
     this.refs.modal.scrollIntoView(true)
+  }
+
+  closeDetailsBox = () => {
+    this.props.toggleShowEventDetails({})
   }
 
   render () {
@@ -75,7 +77,7 @@ class PickUpEventDetails extends Component {
             <button className="button modal-button" onClick={this.addUserToEvent}>I'm Going!</button>
             }
           </div>
-          <button className="button modal-button" onClick={this.props.toggleDetailsShow}>Close</button>
+          <button className="button modal-button" onClick={this.closeDetailsBox}>Close</button>
         </div>
       </div>
     )
