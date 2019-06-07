@@ -26,8 +26,8 @@ class PickUpEventDetails extends Component {
 
   removeUserFromEvent = () => {
     const {id, user_events} = this.props
-    const userId = parseInt(localStorage.getItem("pickUpUser"))
-    const user_event = user_events.find((user_event) => user_event.user_id === userId)
+    const user_event = user_events.find((user_event) => {
+      return user_event.user_id === parseInt(localStorage.getItem("pickUpUser"))})
     fetch(`http://localhost:3000/api/v1/user_events/${user_event.id}`, {
       method: 'DELETE',
       headers: {
@@ -36,14 +36,14 @@ class PickUpEventDetails extends Component {
         Authorization: `Bearer ${localStorage.getItem("pickUpLogin")}`
       },
       body: JSON.stringify({id: user_event.id})
-      })
+    })
     .then(() => this.props.removeUser(id, parseInt(localStorage.getItem("pickUpUser"))))
     .catch(error => console.error(error))
   }
 
   deleteEvent = () => {
     const {id} = this.props
-    fetch(`http://localhost:3000/api/v1/events/${id}`, {
+    fetch(`http://localhost:3000/api/v1/events/${this.props.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -51,26 +51,23 @@ class PickUpEventDetails extends Component {
         Authorization: `Bearer ${localStorage.getItem("pickUpLogin")}`
       },
       body: JSON.stringify({id})
-      })
-      .then(() => this.props.removeEvent(id))
-      .catch(error => console.error(error))
-  }
-
-  componentDidMount = () => {
-    this.refs.modal.scrollIntoView(true)
+    })
+    .then(() => this.props.removeEvent(id))
+    .catch(error => console.error(error))
   }
 
   closeDetailsBox = () => {
     this.props.toggleShowEventDetails({})
   }
 
-  render () {
+  render() {
+
     const {sport, skill_level, location, users, owner, toggleShowEventEdit} = this.props
     const day = new Date(this.props.date).getDate()
     const currentUser = parseInt(localStorage.getItem("pickUpUser"))
 
     return(
-      <div ref="modal" className="event-modal">
+      <div className="event-modal">
         <div className="event-modal-main">
           {owner === currentUser ? <img className="created-star"src={star} alt="owned-event"/> : null}
           <p>Sport: {sport}</p>
@@ -79,15 +76,13 @@ class PickUpEventDetails extends Component {
           <p>Skill Level: {skill_level}</p>
           <p>Location: {location}</p>
           <p>Number of people attending: {users.length}</p>
-          <p></p>
           <div>
             {users.find((user) => user.id === parseInt(localStorage.getItem("pickUpUser"))) ?
-            <div>
-              <p>You are going!</p>
-              <button className="button modal-button" onClick={this.removeUserFromEvent}>Can no longer make it!</button>
-            </div>:
-            <button className="button modal-button" onClick={this.addUserToEvent}>I'm Going!</button>
-            }
+              <div>
+                <p>You are going!</p>
+                <button className="button modal-button" onClick={this.removeUserFromEvent}>Can no longer make it!</button>
+              </div>:
+              <button className="button modal-button" onClick={this.addUserToEvent}>I'm Going!</button>}
             {owner === currentUser ?
               <div>
                 <button className="button modal-button" onClick={this.deleteEvent}>Delete Event</button>
@@ -101,4 +96,5 @@ class PickUpEventDetails extends Component {
     )
   }
 }
+
 export default PickUpEventDetails

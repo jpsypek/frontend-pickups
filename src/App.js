@@ -56,9 +56,10 @@ class App extends Component {
   }
 
   render() {
+
     const {loggedIn, showLogIn, showNewUserForm, userLat, userLng, userId} = this.state
 
-    return (
+    return(
       <div>
         <header>
           <h1 className="app-name">Pick Up Sports!</h1>

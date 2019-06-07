@@ -5,8 +5,8 @@ class UserLogin extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      inputEmail: "",
-      inputPassword: "",
+      email: "",
+      password: "",
       notFound: false,
       showNewUserForm: false
     }
@@ -21,7 +21,7 @@ class UserLogin extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    const {inputPassword, inputEmail} = this.state
+    const {password, email} = this.state
     fetch('http://localhost:3000/api/v1/login', {
       method: 'POST',
       headers: {
@@ -29,10 +29,7 @@ class UserLogin extends Component {
         Accept: 'application/json'
       },
       body: JSON.stringify({
-        user: {
-          email: inputEmail,
-          password: inputPassword
-        }
+        user: {email, password}
       })
     })
       .then(response => response.json())
@@ -41,32 +38,31 @@ class UserLogin extends Component {
     }
 
     handleLogIn = (data) => {
-      const {logIn} = this.props
       if (data.user) {
-        logIn(data.user.id, data.jwt)
+        this.props.logIn(data.user.id, data.jwt)
       } else {
         this.setState({
-          inputEmail: "",
-          inputPassword: "",
+          email: "",
+          password: "",
           notFound: true
         })
       }
     }
 
   render() {
-    const {notFound, inputEmail, inputPassword} = this.state
+    const {notFound, email, password} = this.state
 
     return (
       <div>
         <div className="user-search">
           <div id="form">
             <form className="user-login-form" onSubmit={this.handleSubmit}>
-              <input name="inputEmail" placeholder="Enter your email" value={inputEmail} onChange={this.handleChange} />
-              <input type="password" name="inputPassword" placeholder="Enter your password" value={inputPassword} onChange={this.handleChange} />
+              <input name="email" placeholder="Enter your email" value={email} onChange={this.handleChange} />
+              <input type="password" name="password" placeholder="Enter your password" value={password} onChange={this.handleChange} />
               <button className="button" type="submit">Log In</button>
             </form>
           </div>
-          { notFound ? <p id="error">The entered email or password were incorrect. Please try again.</p> : null}
+          {notFound ? <p id="error">The entered email or password were incorrect. Please try again.</p> : null}
         </div>
       </div>
     )

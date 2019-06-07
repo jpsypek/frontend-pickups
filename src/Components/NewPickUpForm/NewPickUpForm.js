@@ -19,10 +19,6 @@ class NewPickUpForm extends Component {
     }
   }
 
-  static defaultProps = {
-    zoom: 13
-  }
-
   handleChange = (event) => {
     const {name, value} = event.target
     this.setState({
@@ -42,14 +38,14 @@ class NewPickUpForm extends Component {
     fetch(`http://localhost:3000/api/v1/events`, {
       method: "POST",
       headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("pickUpLogin")}`
-        },
-        body: JSON.stringify(this.state)
-      })
-      .then(response => response.json())
-      .then(eventId => this.createRelationship(eventId))
-      .catch(error => (console.error(error)))
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("pickUpLogin")}`
+      },
+      body: JSON.stringify(this.state)
+    })
+    .then(response => response.json())
+    .then(eventId => this.createRelationship(eventId))
+    .catch(error => (console.error(error)))
   }
 
   createRelationship = (eventId) => {
@@ -72,8 +68,9 @@ class NewPickUpForm extends Component {
   }
 
   render() {
+
     const {sport, date, time, skill_level, location, latitude, longitude} = this.state
-    const {loggedIn} = this.props
+    const {loggedIn, userLat, userLng} = this.props
     const API_KEY = `${process.env.REACT_APP_MAPS_API_KEY}`
 
     return(
@@ -85,46 +82,45 @@ class NewPickUpForm extends Component {
                 <input name="date" value={date} onChange={this.handleChange} />
               <label>Sport</label>
                 <select name="sport" value={sport} onChange={this.handleChange}>
-                    <option></option>
-                    <option>Soccer</option>
-                    <option>Spikeball</option>
-                    <option>Basketball</option>
-                    <option>Kickball</option>
-                  </select>
+                  <option></option>
+                  <option>Soccer</option>
+                  <option>Spikeball</option>
+                  <option>Basketball</option>
+                  <option>Kickball</option>
+                </select>
                 <label>Pick Up Time</label>
                   <input name="time" value={time} onChange={this.handleChange} />
                 <label>Skill Level</label>
                   <select name="skill_level" value={skill_level} onChange={this.handleChange}>
-                      <option></option>
-                      <option>Beginner</option>
-                      <option>Intermediate</option>
-                      <option>Advanced</option>
+                    <option></option>
+                    <option>Beginner</option>
+                    <option>Intermediate</option>
+                    <option>Advanced</option>
                   </select>
                 <label>Location (specific park, gym, etc.)</label>
                   <input name="location" value={location} onChange={this.handleChange} />
                 <div>
-                <label>Please select the exact location on the map below:</label>
-                <div id="new-event-map">
-                  <GoogleMap
-                      onClick={this.handleMapClick}
-                      bootstrapURLKeys={{ key: API_KEY }}
-                      defaultCenter={{
-                      lat: this.props.userLat,
-                      lng: this.props.userLng}}
-                      defaultZoom={this.props.zoom}
-                      yesIWantToUseGoogleMapApiInternals
-
-                  >
-                  {latitude && longitude ?
-                  <NewPickUpMarker lat={latitude} lng={longitude} sport={sport} /> :
-                  null}
-                  </GoogleMap>
+                  <label>Please select the exact location on the map below:</label>
+                    <div id="new-event-map">
+                      <GoogleMap
+                        onClick={this.handleMapClick}
+                        bootstrapURLKeys={{ key: API_KEY }}
+                        defaultCenter={{
+                        lat: userLat,
+                        lng: userLng}}
+                        defaultZoom={13}
+                        yesIWantToUseGoogleMapApiInternals
+                      >
+                      {latitude && longitude ?
+                        <NewPickUpMarker lat={latitude} lng={longitude} sport={sport} /> :
+                        null}
+                      </GoogleMap>
+                    </div>
                 </div>
-                </div>
-              <button type="submit">Add Event</button>
+                <button type="submit">Add Event</button>
             </form>
           </div> :
-        <p>You must be logged in to access this content</p>}
+          <p>You must be logged in to access this content.</p>}
       </div>
     )
   }

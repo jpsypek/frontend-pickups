@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import GoogleMap from 'google-map-react'
+import GoogleMapReact from 'google-map-react'
 import NewPickUpMarker from '../NewPickUpMarker/NewPickUpMarker'
 import './EditPickUpEvent.css'
 
@@ -39,6 +39,7 @@ class EditPickUpEvent extends Component {
     }
 
   render() {
+
     const {sport, date, time, skill_level, location, latitude, longitude} = this.state
     const API_KEY = `${process.env.REACT_APP_MAPS_API_KEY}`
 
@@ -50,44 +51,44 @@ class EditPickUpEvent extends Component {
               <input name="date" value={date} onChange={this.handleChange} />
             <label>Sport</label>
               <select name="sport" value={sport} onChange={this.handleChange}>
-                  <option></option>
-                  <option>Soccer</option>
-                  <option>Spikeball</option>
-                  <option>Basketball</option>
-                  <option>Kickball</option>
-                </select>
-              <label>Pick Up Time</label>
+                <option></option>
+                <option>Soccer</option>
+                <option>Spikeball</option>
+                <option>Basketball</option>
+                <option>Kickball</option>
+              </select>
+            <label>Pick Up Time</label>
                 <input name="time" value={time} onChange={this.handleChange} />
-              <label>Skill Level</label>
-                <select name="skill_level" value={skill_level} onChange={this.handleChange}>
-                    <option></option>
-                    <option>Beginner</option>
-                    <option>Intermediate</option>
-                    <option>Advanced</option>
-                </select>
-              <label>Location (specific park, gym, etc.)</label>
-                <input name="location" value={location} onChange={this.handleChange} />
-              <div>
+            <label>Skill Level</label>
+              <select name="skill_level" value={skill_level} onChange={this.handleChange}>
+                <option></option>
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+              </select>
+            <label>Location (specific park, gym, etc.)</label>
+              <input name="location" value={location} onChange={this.handleChange} />
+            <div>
               <label>Please select the exact location on the map below:</label>
-              <div id="edit-event-map">
-                <GoogleMap
-                    onClick={this.handleMapClick}
-                    bootstrapURLKeys={{ key: API_KEY }}
-                    defaultCenter={{
-                    lat: this.props.userLat,
-                    lng: this.props.userLng}}
-                    defaultZoom={12}
-                    yesIWantToUseGoogleMapApiInternals
-                >
-                {latitude && longitude ?
-                <NewPickUpMarker lat={latitude} lng={longitude} sport={sport} /> :
-                null}
-                </GoogleMap>
-              </div>
-              </div>
+                <div id="edit-event-map">
+                  <GoogleMapReact
+                      onClick={this.handleMapClick}
+                      bootstrapURLKeys={{ key: API_KEY }}
+                      defaultCenter={{
+                      lat: this.props.userLat,
+                      lng: this.props.userLng}}
+                      defaultZoom={12}
+                      yesIWantToUseGoogleMapApiInternals
+                  >
+                  {latitude && longitude ?
+                    <NewPickUpMarker lat={latitude} lng={longitude} sport={sport} /> :
+                    null}
+                  </GoogleMapReact>
+                </div>
+            </div>
             <button type="submit">Edit Event</button>
           </form>
-      </div>
+        </div>
       </div>
     )
   }

@@ -18,10 +18,6 @@ class PickUpContainer extends Component  {
     }
   }
 
-  static defaultProps = {
-    zoom: 12
-  }
-
   componentDidMount = () => {
     this.getEvents()
   }
@@ -31,12 +27,13 @@ class PickUpContainer extends Component  {
       fetch('http://localhost:3000/api/v1/events', {
         method: 'GET',
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("pickUpLogin")}`
-          }
+        }
       })
-        .then(response => response.json())
-        .then(events => this.setState({events}))
-        .catch(error=>console.error(error))
+      .then(response => response.json())
+      .then(events => this.setState({events}))
+      .catch(error=>console.error(error))
     }
   }
 
@@ -56,6 +53,13 @@ class PickUpContainer extends Component  {
     this.setStateWithUpdatedEvent(unchangedEvents, eventWithRemovedUser)
   }
 
+  updateEvent = (updatedEvent) => {
+    const {events} = this.state
+    const unchangedEvents = events.filter((event) => event.id !== updatedEvent.id)
+    this.setStateWithUpdatedEvent(unchangedEvents, updatedEvent)
+    this.toggleShowEventEdit({})
+  }
+
   setStateWithUpdatedEvent = (unchangedEvents, updatedEvent) => {
     this.setState({events: [...unchangedEvents, updatedEvent]})
     this.getEvents()
@@ -65,16 +69,9 @@ class PickUpContainer extends Component  {
   removeEvent = (eventId) => {
     const {events} = this.state
     const updatedEvents = events.filter((event) => event.id !== eventId)
-    this.setStateWithUpdatedEvent([], updatedEvents)
-  }
-
-  updateEvent = (updatedEvent) => {
-    const {events} = this.state
-    const unchangedEvents = events.filter((event) => event.id !== updatedEvent.id)
-    this.setState({events: [...unchangedEvents, updatedEvent]})
+    this.setState({events: updatedEvents})
     this.getEvents()
-    this.toggleShowEventEdit({})
-    this.toggleShowEventDetails({})
+    this.toggleShowEventDetails()
   }
 
   toggleShowEventDetails = (event) => {
@@ -88,7 +85,8 @@ class PickUpContainer extends Component  {
     this.setState({showEventEdit: !this.state.showEventEdit})
   }
 
-  render () {
+  render() {
+
     const {loggedIn, userLat, userLng} = this.props
     const {events, showEventDetail, eventForDetail, showEventEdit} = this.state
     const API_KEY = `${process.env.REACT_APP_MAPS_API_KEY}`
@@ -120,13 +118,13 @@ class PickUpContainer extends Component  {
                 <EditPickUpEvent userLat={userLat} userLng={userLng} toggleShowEventEdit={this.toggleShowEventEdit}
                   updateEvent={this.updateEvent} {...eventForDetail} /> :
                 null}
-          </GoogleMapReact>
-        </div>
+              </GoogleMapReact>
+          </div>
         <div className="star-explanation">
           <img id="star-for-explanation" alt="owned-event" src={star} /> <span className="star-explanation">* Events you created</span>
         </div>
-        </div>:
-        <p>You must log in to access this content</p>}
+      </div>:
+        <p>You must be logged in to access this content.</p>}
     </div>
     )
   }

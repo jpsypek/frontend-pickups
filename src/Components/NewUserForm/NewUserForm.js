@@ -58,34 +58,36 @@ class NewUserForm extends Component {
   }
 
   render() {
+
     const {showNewUserForm, toggleShowNewUserForm} = this.props
     const {email, password, first_name, last_name, bio, showError} = this.state
 
-    return (
+    return(
       <div>
         {showNewUserForm ?
           <div className="modal">
             <div className="modal-main">
-                <form onSubmit={this.handleSubmit}>
-                  <label className="modal-label">First Name:</label>
-                  <input className="modal-input" name="first_name" onChange={this.handleChange} value={first_name} />
-                  <label className="modal-label">Last Name:</label>
-                  <input className="modal-input" name="last_name" onChange={this.handleChange} value={last_name} />
-                  <label className="modal-label">Bio:</label>
-                  <textarea className="modal-input" name="bio" onChange={this.handleChange} value={bio} />
-                  <label className="modal-label">Email:</label>
-                  <input className="modal-input" name="email" onChange={this.handleChange} value={email} />
-                  <label className="modal-label">Password:</label>
-                  <input className="modal-input" type="password" name="password" onChange={this.handleChange} value={password} />
-                  <button className="button modal-button" type="submit">Create Account</button>
-                </form>
-                {showError ? <p>Invalid username, please try again</p> : null}
-                <button className="button modal-button" onClick={toggleShowNewUserForm}>Close</button>
-              </div>
-            </div> :
-          null}
+              <form onSubmit={this.handleSubmit}>
+                <label className="modal-label">First Name:</label>
+                <input className="modal-input" name="first_name" onChange={this.handleChange} value={first_name} />
+                <label className="modal-label">Last Name:</label>
+                <input className="modal-input" name="last_name" onChange={this.handleChange} value={last_name} />
+                <label className="modal-label">Bio:</label>
+                <textarea className="modal-input" name="bio" onChange={this.handleChange} value={bio} />
+                <label className="modal-label">Email:</label>
+                <input className="modal-input" name="email" onChange={this.handleChange} value={email} />
+                <label className="modal-label">Password:</label>
+                <input className="modal-input" type="password" name="password" onChange={this.handleChange} value={password} />
+                <button className="button modal-button" type="submit">Create Account</button>
+              </form>
+              {showError ? <p>Invalid username, please try again</p> : null}
+              <button className="button modal-button" onClick={toggleShowNewUserForm}>Close</button>
+            </div>
+          </div> :
+        null}
       </div>
     )
   }
 }
+
 export default NewUserForm
