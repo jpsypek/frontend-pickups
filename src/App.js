@@ -14,7 +14,9 @@ class App extends Component {
       loggedIn: false,
       showLogIn: false,
       showNewUserForm: false,
-      userId: ""
+      userId: "",
+      userLat: "",
+      userLng: ""
     }
   }
 
@@ -22,6 +24,11 @@ class App extends Component {
     if (localStorage.getItem('pickUpLogin')) {
       this.logIn(localStorage.getItem('pickUpUser'), localStorage.getItem('pickUpLogin'))
     }
+    navigator.geolocation.getCurrentPosition((position) => {
+      this.setState({
+        userLat: position.coords.latitude,
+        userLng: position.coords.longitude
+      })})
   }
 
   logIn = (userId, token) => {
@@ -49,7 +56,7 @@ class App extends Component {
   }
 
   render() {
-    const {loggedIn, showLogIn, showNewUserForm} = this.state
+    const {loggedIn, showLogIn, showNewUserForm, userLat, userLng, userId} = this.state
 
     return (
       <div>
@@ -81,14 +88,14 @@ class App extends Component {
             </nav>
             <div className="containers">
               <Route exact={true} path="/" component={() => <HomePage loggedIn={loggedIn}/>} />
-              <Route path="/pickups" component={() => <PickUpContainer loggedIn={loggedIn}/>} />
-              <Route path="/addpickup" component={() => <NewPickUpForm loggedIn={loggedIn}/>} />
+              <Route path="/pickups" component={() => <PickUpContainer userLat={userLat} userLng={userLng} loggedIn={loggedIn}/>} />
+              <Route path="/addpickup" component={() => <NewPickUpForm userLat={userLat} userLng={userLng} userId={userId} loggedIn={loggedIn}/>} />
             </div>
           </div>
         </Router>
-    </div>
-  )
-}
+      </div>
+    )
+  }
 }
 
 export default App

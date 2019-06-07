@@ -4,3 +4,12 @@
   margin: 0 auto;
   z-index: 0
 }
+
+#star-explanation {
+  display: inline-block
+}
+
+#star-for-explanation {
+  height: 1.7rem;
+  display: inline-block;
+}

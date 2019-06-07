@@ -1,38 +1,33 @@
 import React, { Component } from 'react'
 import './PickUpEventDetails.css'
+import star from '../../markers/star.png'
 
 class PickUpEventDetails extends Component {
 
-
   addUserToEvent = () => {
-    const {id, user_events} = this.props
-    const userId = parseInt(localStorage.getItem("pickUpUser"))
-    const user_event = user_events.find((user_event) => user_event.user_id === userId)
-    if (!user_event) {
-      fetch('http://localhost:3000/api/v1/user_events', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json'
-        },
-        body: JSON.stringify({
-          user_event: {
-            user_id: localStorage.getItem("pickUpUser"),
-  		      event_id: id
-          }
-        })
+    const {id} = this.props
+    fetch('http://localhost:3000/api/v1/user_events', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify({
+        user_event: {
+          user_id: localStorage.getItem("pickUpUser"),
+		      event_id: id
+        }
       })
-      .then(response => response.json())
-  	  .then(data => this.props.updateUsers(id, data.user))
-      .catch(error => console.error(error))
-    }
+    })
+    .then(response => response.json())
+	  .then(data => this.props.updateUsers(id, data.user))
+    .catch(error => console.error(error))
   }
 
   removeUserFromEvent = () => {
     const {id, user_events} = this.props
     const userId = parseInt(localStorage.getItem("pickUpUser"))
     const user_event = user_events.find((user_event) => user_event.user_id === userId)
-    if (user_event) {
     fetch(`http://localhost:3000/api/v1/user_events/${user_event.id}`, {
       method: 'DELETE',
       headers: {
@@ -44,7 +39,21 @@ class PickUpEventDetails extends Component {
       })
     .then(() => this.props.removeUser(id, parseInt(localStorage.getItem("pickUpUser"))))
     .catch(error => console.error(error))
-    }
+  }
+
+  deleteEvent = () => {
+    const {id} = this.props
+    fetch(`http://localhost:3000/api/v1/events/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${localStorage.getItem("pickUpLogin")}`
+      },
+      body: JSON.stringify({id})
+      })
+      .then(() => this.props.removeEvent(id))
+      .catch(error => console.error(error))
   }
 
   componentDidMount = () => {
@@ -56,17 +65,20 @@ class PickUpEventDetails extends Component {
   }
 
   render () {
-    const {sport, skill_level, location, users} = this.props
+    const {sport, skill_level, location, users, owner, toggleShowEventEdit} = this.props
     const day = new Date(this.props.date).getDate()
+    const currentUser = parseInt(localStorage.getItem("pickUpUser"))
 
     return(
       <div ref="modal" className="event-modal">
         <div className="event-modal-main">
+          {owner === currentUser ? <img className="created-star"src={star} alt="owned-event"/> : null}
           <p>Sport: {sport}</p>
           <p>Time: {this.props.time}</p>
           <p>Day: {day}</p>
           <p>Skill Level: {skill_level}</p>
           <p>Location: {location}</p>
+          <p>Number of people attending: {users.length}</p>
           <p></p>
           <div>
             {users.find((user) => user.id === parseInt(localStorage.getItem("pickUpUser"))) ?
@@ -76,6 +88,12 @@ class PickUpEventDetails extends Component {
             </div>:
             <button className="button modal-button" onClick={this.addUserToEvent}>I'm Going!</button>
             }
+            {owner === currentUser ?
+              <div>
+                <button className="button modal-button" onClick={this.deleteEvent}>Delete Event</button>
+                <button className="button modal-button" onClick={toggleShowEventEdit}>Edit Event</button>
+              </div> :
+              null}
           </div>
           <button className="button modal-button" onClick={this.closeDetailsBox}>Close</button>
         </div>

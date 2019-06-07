@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import GoogleMap from 'google-map-react'
+import GoogleMapReact from 'google-map-react'
 import './PickUpContainer.css'
 import PickUpEvent from '../PickUpEvent/PickUpEvent'
 import EventFilter from '../EventFilter/EventFilter'
 import PickUpEventDetails from '../PickUpEventDetails/PickUpEventDetails'
+import EditPickUpEvent from '../EditPickUpEvent/EditPickUpEvent'
+import star from '../../markers/star.png'
 
 class PickUpContainer extends Component  {
   constructor(props) {
@@ -11,12 +13,12 @@ class PickUpContainer extends Component  {
     this.state = {
       events: [],
       eventForDetail: {},
-      showEventDetail: false
+      showEventDetail: false,
+      showEventEdit: false
     }
   }
 
   static defaultProps = {
-    center: {lat: 39.71, lng: -104.97},
     zoom: 12
   }
 
@@ -43,21 +45,35 @@ class PickUpContainer extends Component  {
     const eventToUpdate = events.find((event) => event.id === eventId)
     eventToUpdate.users.push(user)
     const unchangedEvents = events.filter((event) => event.id !== eventId)
-    this.setState({
-      events: [...unchangedEvents, eventToUpdate]
-    })
-    this.getEvents()
-    this.toggleShowEventDetails({})
+    this.setStateWithUpdatedEvent(unchangedEvents, eventToUpdate)
   }
 
   removeUser = (eventId, userId) => {
     const {events} = this.state
     const eventToUpdate = events.find((event) => event.id === eventId)
+    const unchangedEvents = events.filter((event) => event.id !== eventId)
     const eventWithRemovedUser = eventToUpdate.users.filter((user) => user.id !== userId)
-    this.setState({
-      events: eventWithRemovedUser
-    })
+    this.setStateWithUpdatedEvent(unchangedEvents, eventWithRemovedUser)
+  }
+
+  setStateWithUpdatedEvent = (unchangedEvents, updatedEvent) => {
+    this.setState({events: [...unchangedEvents, updatedEvent]})
     this.getEvents()
+    this.toggleShowEventDetails()
+  }
+
+  removeEvent = (eventId) => {
+    const {events} = this.state
+    const updatedEvents = events.filter((event) => event.id !== eventId)
+    this.setStateWithUpdatedEvent([], updatedEvents)
+  }
+
+  updateEvent = (updatedEvent) => {
+    const {events} = this.state
+    const unchangedEvents = events.filter((event) => event.id !== updatedEvent.id)
+    this.setState({events: [...unchangedEvents, updatedEvent]})
+    this.getEvents()
+    this.toggleShowEventEdit({})
     this.toggleShowEventDetails({})
   }
 
@@ -68,9 +84,13 @@ class PickUpContainer extends Component  {
     })
   }
 
+  toggleShowEventEdit = () => {
+    this.setState({showEventEdit: !this.state.showEventEdit})
+  }
+
   render () {
-    const {loggedIn} = this.props
-    const {events, showEventDetail, eventForDetail} = this.state
+    const {loggedIn, userLat, userLng} = this.props
+    const {events, showEventDetail, eventForDetail, showEventEdit} = this.state
     const API_KEY = `${process.env.REACT_APP_MAPS_API_KEY}`
     const eventItems = events.map((event) => {
       return <PickUpEvent key={event.id + Date.now()} lat={event.latitude} getEvents={this.getEvents}
@@ -83,18 +103,27 @@ class PickUpContainer extends Component  {
           <div>
             <EventFilter />
             <div id="events-map">
-              <GoogleMap
+              <GoogleMapReact
                   bootstrapURLKeys={{ key: API_KEY }}
-                  defaultCenter={this.props.center}
-                  defaultZoom={this.props.zoom}
+                  defaultCenter={{
+                  lat: userLat,
+                  lng: userLng}}
+                  defaultZoom={12}
                   yesIWantToUseGoogleMapApiInternals
               >
               {eventItems}
               {showEventDetail ?
-                <PickUpEventDetails updateUsers={this.updateUsers} removeUser={this.removeUser} {...eventForDetail}
-                toggleShowEventDetails={this.toggleShowEventDetails}/> :
+                <PickUpEventDetails updateUsers={this.updateUsers} removeUser={this.removeUser} removeEvent={this.removeEvent}
+                  {...eventForDetail} toggleShowEventDetails={this.toggleShowEventDetails} toggleShowEventEdit={this.toggleShowEventEdit} /> :
+                  null}
+              {showEventEdit ?
+                <EditPickUpEvent userLat={userLat} userLng={userLng} toggleShowEventEdit={this.toggleShowEventEdit}
+                  updateEvent={this.updateEvent} {...eventForDetail} /> :
                 null}
-          </GoogleMap>
+          </GoogleMapReact>
+        </div>
+        <div className="star-explanation">
+          <img id="star-for-explanation" alt="owned-event" src={star} /> <span className="star-explanation">* Events you created</span>
         </div>
         </div>:
         <p>You must log in to access this content</p>}

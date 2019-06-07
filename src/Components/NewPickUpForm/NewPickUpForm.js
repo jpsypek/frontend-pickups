@@ -6,6 +6,7 @@ import NewPickUpMarker from '../NewPickUpMarker/NewPickUpMarker'
 class NewPickUpForm extends Component {
   constructor(props) {
     super(props)
+    const owner = parseInt(props.userId)
     this.state = {
       sport: "",
       date: "",
@@ -13,13 +14,13 @@ class NewPickUpForm extends Component {
       skill_level: "",
       location: "",
       latitude: "",
-      longitude: ""
+      longitude: "",
+      owner
     }
   }
 
   static defaultProps = {
-    center: {lat: 39.71, lng: -104.97},
-    zoom: 12
+    zoom: 13
   }
 
   handleChange = (event) => {
@@ -36,6 +37,40 @@ class NewPickUpForm extends Component {
     })
   }
 
+  handleSubmit = (event) => {
+    event.preventDefault()
+    fetch(`http://localhost:3000/api/v1/events`, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("pickUpLogin")}`
+        },
+        body: JSON.stringify(this.state)
+      })
+      .then(response => response.json())
+      .then(eventId => this.createRelationship(eventId))
+      .catch(error => (console.error(error)))
+  }
+
+  createRelationship = (eventId) => {
+    fetch('http://localhost:3000/api/v1/user_events', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify({
+        user_event: {
+          user_id: localStorage.getItem("pickUpUser"),
+          event_id: eventId
+        }
+      })
+    })
+    .then(response => response.json())
+    .catch(error => console.error(error))
+    window.location.href = "http://localhost:3001/pickups"
+  }
+
   render() {
     const {sport, date, time, skill_level, location, latitude, longitude} = this.state
     const {loggedIn} = this.props
@@ -45,7 +80,7 @@ class NewPickUpForm extends Component {
       <div>
         {loggedIn ?
           <div>
-            <form className="new-pickup-form">
+            <form className="new-pickup-form" onSubmit={this.handleSubmit}>
               <label>Pick Up Date</label>
                 <input name="date" value={date} onChange={this.handleChange} />
               <label>Sport</label>
@@ -67,14 +102,15 @@ class NewPickUpForm extends Component {
                   </select>
                 <label>Location (specific park, gym, etc.)</label>
                   <input name="location" value={location} onChange={this.handleChange} />
-                {sport ?
                 <div>
                 <label>Please select the exact location on the map below:</label>
                 <div id="new-event-map">
                   <GoogleMap
                       onClick={this.handleMapClick}
                       bootstrapURLKeys={{ key: API_KEY }}
-                      defaultCenter={this.props.center}
+                      defaultCenter={{
+                      lat: this.props.userLat,
+                      lng: this.props.userLng}}
                       defaultZoom={this.props.zoom}
                       yesIWantToUseGoogleMapApiInternals
 
@@ -84,8 +120,8 @@ class NewPickUpForm extends Component {
                   null}
                   </GoogleMap>
                 </div>
-                </div>:
-                null}
+                </div>
+              <button type="submit">Add Event</button>
             </form>
           </div> :
         <p>You must be logged in to access this content</p>}

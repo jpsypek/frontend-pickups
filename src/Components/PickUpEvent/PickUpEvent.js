@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import './PickUpEvent.css'
 import spikeball from '../../markers/spikeball.png'
 import soccer from '../../markers/soccer.png'
+import basketball from '../../markers/basketball.png'
+import kickball from '../../markers/kickball.png'
+import defaultBall from '../../markers/default.png'
 
 class PickUpEvent extends Component {
 
@@ -18,10 +21,15 @@ class PickUpEvent extends Component {
           return spikeball
         case "Soccer":
           return soccer
-        default:
-          return soccer
-      }
-    }
+          case "Basketball":
+            return basketball
+          case "Kickball":
+            return kickball
+          default:
+            return defaultBall
+          }
+        }
+
 
     return (
       <div className="marker" onClick={this.toggleDetailsShow}>

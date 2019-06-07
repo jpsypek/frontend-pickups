@@ -4,6 +4,7 @@ import spikeball from '../../markers/spikeball.png'
 import soccer from '../../markers/soccer.png'
 import basketball from '../../markers/basketball.png'
 import kickball from '../../markers/kickball.png'
+import defaultBall from '../../markers/default.png'
 
 const NewPickUpMarker = (props) => {
 
@@ -18,7 +19,7 @@ const NewPickUpMarker = (props) => {
       case "Kickball":
         return kickball
       default:
-        return soccer
+        return defaultBall
       }
     }
 
