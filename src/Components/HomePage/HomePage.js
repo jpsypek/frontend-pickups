@@ -6,8 +6,11 @@ const HomePage = (props) => {
 
   return(
     <div>
+      <h3>Welcome to Pick-Ups!</h3>
+      <h4>The one place to go to view all of the pick-up sporting events that are going on near you!</h4>
       {loggedIn ?
-        <p>logged in</p> : <p>not logged in</p>}
+        <p>In order to get started, please select from the menu above</p> :
+        <p>In order to get started, please either log in or create an account above.</p>}
     </div>
   )
 }
