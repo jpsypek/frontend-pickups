@@ -1,3 +1,17 @@
+/* Lot of duplication in your classes use something like CSS BEM to clean up
+  example:
+
+  .event__modal {
+    default values
+  }
+
+  .event__modal--main {
+    different value for main
+  }
+
+  then on your element add .event .event__modal--main
+*/
+
 .event-modal {
   position: absolute;
   top: 0;
