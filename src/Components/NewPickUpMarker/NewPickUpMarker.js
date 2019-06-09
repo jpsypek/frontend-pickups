@@ -7,6 +7,7 @@ import kickball from '../../markers/kickball.png'
 
 const NewPickUpMarker = (props) => {
 
+  // Same here you could make a hash for O(1) time complexity
   const icon = () => {
     switch (props.sport) {
       case "Spikeball":
@@ -19,8 +20,8 @@ const NewPickUpMarker = (props) => {
         return kickball
       default:
         return soccer
-      }
     }
+  }
 
   return (
     <div className="marker" >
@@ -28,4 +29,5 @@ const NewPickUpMarker = (props) => {
     </div>
   )
 }
+
 export default NewPickUpMarker
