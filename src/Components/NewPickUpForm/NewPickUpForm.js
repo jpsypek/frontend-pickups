@@ -54,7 +54,7 @@ class NewPickUpForm extends Component {
               <input name="date" value={date} onChange={this.handleChange} />
               <label>Sport</label>
               <select name="sport" value={sport} onChange={this.handleChange}>
-                <option selected="true" disabled="disabled">Choose Sport</option>
+                <option selected="true" disabled="disabled">Choose Sport:</option>
                 <option>Soccer</option>
                 <option>Spikeball</option>
                 <option>Basketball</option>
@@ -64,7 +64,7 @@ class NewPickUpForm extends Component {
               <input name="time" value={time} onChange={this.handleChange} />
               <label>Skill Level</label>
               <select name="skill_level" value={skill_level} onChange={this.handleChange}>
-                <option></option>
+                <option selected="true" disabled="disabled">Choose Skill Level:</option>
                 <option>Beginner</option>
                 <option>Intermediate</option>
                 <option>Advanced</option>
