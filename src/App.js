@@ -55,6 +55,7 @@ class App extends Component {
     const { loggedIn, showLogIn, showNewUserForm } = this.state;
 
     return (
+      // https://reactjs.org/docs/fragments.html
       <Fragment>
         <header>
           <h1 className="app-name">Pick Up Sports!</h1>
