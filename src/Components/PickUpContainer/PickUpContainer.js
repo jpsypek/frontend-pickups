@@ -5,7 +5,7 @@ import PickUpEvent from '../PickUpEvent/PickUpEvent'
 import EventFilter from '../EventFilter/EventFilter'
 import PickUpEventDetails from '../PickUpEventDetails/PickUpEventDetails'
 
-class PickUpContainer extends Component  {
+class PickUpContainer extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -16,7 +16,7 @@ class PickUpContainer extends Component  {
   }
 
   static defaultProps = {
-    center: {lat: 39.71, lng: -104.97},
+    center: { lat: 39.71, lng: -104.97 },
     zoom: 12
   }
 
@@ -30,19 +30,20 @@ class PickUpContainer extends Component  {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pickUpLogin")}`
-          }
+        }
       })
         .then(response => response.json())
-        .then(events => this.setState({events}))
-        .catch(error=>console.error(error))
+        .then(events => this.setState({ events }))
+        .catch(error => console.error(error))
     }
   }
 
   updateUsers = (eventId, user) => {
-    const {events} = this.state
+    const { events } = this.state
     const eventToUpdate = events.find((event) => event.id === eventId)
     eventToUpdate.users.push(user)
     const unchangedEvents = events.filter((event) => event.id !== eventId)
+
     this.setState({
       events: [...unchangedEvents, eventToUpdate]
     })
@@ -51,9 +52,10 @@ class PickUpContainer extends Component  {
   }
 
   removeUser = (eventId, userId) => {
-    const {events} = this.state
+    const { events } = this.state
     const eventToUpdate = events.find((event) => event.id === eventId)
     const eventWithRemovedUser = eventToUpdate.users.filter((user) => user.id !== userId)
+
     this.setState({
       events: eventWithRemovedUser
     })
@@ -68,37 +70,43 @@ class PickUpContainer extends Component  {
     })
   }
 
-  render () {
-    const {loggedIn} = this.props
-    const {events, showEventDetail, eventForDetail} = this.state
+  render() {
+    const { loggedIn } = this.props
+    const { events, showEventDetail, eventForDetail } = this.state
     const API_KEY = `${process.env.REACT_APP_MAPS_API_KEY}`
     const eventItems = events.map((event) => {
-      return <PickUpEvent key={event.id + Date.now()} lat={event.latitude} getEvents={this.getEvents}
-        lng={event.longitude} toggleShowEventDetails={this.toggleShowEventDetails} event={event} />
+      return <PickUpEvent
+        key={event.id + Date.now()}
+        lat={event.latitude}
+        getEvents={this.getEvents}
+        lng={event.longitude}
+        toggleShowEventDetails={this.toggleShowEventDetails}
+        event={event}
+      />
     })
-
-    return(
+    // for the first div you can prob. use a fragment 
+    return (
       <div >
         {loggedIn ?
           <div>
             <EventFilter />
             <div id="events-map">
               <GoogleMap
-                  bootstrapURLKeys={{ key: API_KEY }}
-                  defaultCenter={this.props.center}
-                  defaultZoom={this.props.zoom}
-                  yesIWantToUseGoogleMapApiInternals
+                bootstrapURLKeys={{ key: API_KEY }}
+                defaultCenter={this.props.center}
+                defaultZoom={this.props.zoom}
+                yesIWantToUseGoogleMapApiInternals
               >
-              {eventItems}
-              {showEventDetail ?
-                <PickUpEventDetails updateUsers={this.updateUsers} removeUser={this.removeUser} {...eventForDetail}
-                toggleShowEventDetails={this.toggleShowEventDetails}/> :
-                null}
-          </GoogleMap>
-        </div>
-        </div>:
-        <p>You must log in to access this content</p>}
-    </div>
+                {eventItems}
+                {showEventDetail ?
+                  <PickUpEventDetails updateUsers={this.updateUsers} removeUser={this.removeUser} {...eventForDetail}
+                    toggleShowEventDetails={this.toggleShowEventDetails} /> :
+                  null}
+              </GoogleMap>
+            </div>
+          </div> :
+          <p>You must log in to access this content</p>}
+      </div>
     )
   }
 }
