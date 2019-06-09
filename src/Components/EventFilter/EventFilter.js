@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+// if state isnt needed change from class to functional component
 class EventFilter extends Component {
   constructor(props) {
     super(props)
@@ -9,7 +10,7 @@ class EventFilter extends Component {
   }
   render() {
 
-    return(
+    return (
       <form>
         <label>Filter!</label>
       </form>

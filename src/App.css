@@ -1,22 +1,43 @@
-@import url('https://fonts.googleapis.com/css?family=Domine|Roboto&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Domine|Roboto&display=swap");
+
+/* Add commented section for your css and organize it 
+  Example:
+  *** Global styles ***
+  body {}
+  header{}
+  h1{}
+  textarea{}
+  input{}
+  etc...
+
+  *** User section ***
+  .user-credentials {}
+
+  *** Modal Section ***
+  .modal {}
+
+  also checkout css BEM
+  http://getbem.com/introduction/
+
+*/
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   text-align: center;
 }
 
 header {
-  background-color: rgb(60,60,60, 1);
+  background-color: rgb(60, 60, 60, 1);
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 99
+  z-index: 99;
 }
 
 .app-name {
-  font-family: 'Domine', serif;
+  font-family: "Domine", serif;
   margin-top: 1.5rem;
-  color: white
+  color: white;
 }
 h1 {
   text-align: center;
@@ -32,26 +53,25 @@ h1 {
   position: fixed;
   top: 0;
   left: 0;
-  width:100%;
+  width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
   display: block;
-
 }
 
 .modal-main {
-  position:fixed;
+  position: fixed;
   background: white;
   width: auto;
   height: auto;
-  top:50%;
-  left:50%;
+  top: 50%;
+  left: 50%;
   padding: 2rem 8rem;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   border-radius: 20px;
   border-style: solid;
-  border-color: rgba(25,65,137, 1);
-  border-width: 4px
+  border-color: rgba(25, 65, 137, 1);
+  border-width: 4px;
 }
 
 .modal-label {
@@ -64,18 +84,19 @@ h1 {
 }
 
 textarea {
-  width: 400px
+  width: 400px;
 }
 
 .modal-button {
   display: block;
   padding: auto;
-  margin: 0.5rem auto
+  margin: 0.5rem auto;
 }
 
-input, textarea {
+input,
+textarea {
   padding: 3px;
-  margin: 5px
+  margin: 5px;
 }
 
 /*  NavBar*/
@@ -83,7 +104,7 @@ nav {
   position: fixed;
   top: 5rem;
   width: 100%;
-  z-index: 90
+  z-index: 90;
 }
 
 ul {
@@ -91,14 +112,14 @@ ul {
   margin: 0;
   padding: 1rem;
   overflow: hidden;
-  background-color: rgba(25,65,137, 0.85);
+  background-color: rgba(25, 65, 137, 0.85);
 }
 
 li {
   float: center;
   display: inline;
   /* padding-top: 8rem; */
-  margin: 1rem 0.5rem
+  margin: 1rem 0.5rem;
 }
 
 li a {
@@ -110,10 +131,10 @@ li a {
 }
 
 li a:hover {
-  background-color: rgba(25,65,137, 1);
+  background-color: rgba(25, 65, 137, 1);
 }
 
 .containers {
   position: relative;
-  top: 10rem
+  top: 10rem;
 }
