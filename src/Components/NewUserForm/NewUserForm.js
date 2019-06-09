@@ -89,4 +89,5 @@ class NewUserForm extends Component {
     )
   }
 }
+
 export default NewUserForm
