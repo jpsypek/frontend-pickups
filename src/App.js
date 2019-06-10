@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import './App.css'
-import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom';
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import UserLogin from './Components/UserLogin/UserLogin'
 import NewUserForm from './Components/NewUserForm/NewUserForm'
 import HomePage from './Components/HomePage/HomePage'
@@ -22,7 +22,10 @@ class App extends Component {
 
   componentDidMount = () => {
     if (localStorage.getItem('pickUpLogin')) {
-      this.logIn(localStorage.getItem('pickUpUser'), localStorage.getItem('pickUpLogin'))
+      this.logIn(
+        localStorage.getItem('pickUpUser'),
+        localStorage.getItem('pickUpLogin')
+      )
     }
     navigator.geolocation.getCurrentPosition((position) => {
       this.setState({
@@ -34,13 +37,13 @@ class App extends Component {
   logIn = (userId, token) => {
     localStorage.setItem('pickUpUser', userId)
     localStorage.setItem('pickUpLogin', token)
-    this.setState({userId, showLogIn: false, loggedIn: true})
+    this.setState({ userId, showLogIn: false, loggedIn: true })
   }
 
   logOut = () => {
     localStorage.clear()
     window.location.href = "http://localhost:3001/"
-    this.setState({loggedIn: false, userId: "", showLogIn: false})
+    this.setState({ loggedIn: false, userId: "", showLogIn: false })
   }
 
   toggleShowLogIn = () => {
@@ -57,44 +60,84 @@ class App extends Component {
 
   render() {
 
-    const {loggedIn, showLogIn, showNewUserForm, userLat, userLng, userId} = this.state
+    const { loggedIn, showLogIn, showNewUserForm, userLat, userLng, userId } = this.state
 
     return(
-      <div>
+      <>
         <header>
           <h1 className="app-name">Pick Up Sports!</h1>
-          { loggedIn
-            ? <button className="button log-out user-credentials" onClick={this.logOut}>Log Out</button>
-            : <div className="user-credentials">
-                <button onClick={this.toggleShowLogIn}>Log In</button>
-                <button onClick={this.toggleShowNewUserForm} className="create-act button">Create Account</button>
-                <NewUserForm showNewUserForm={showNewUserForm} toggleShowNewUserForm={this.toggleShowNewUserForm} logIn={this.logIn}/>
-              </div>}
-          { showLogIn ? <UserLogin logIn={this.logIn}/> : null}
+          {loggedIn ? (
+            <button
+              className="button log-out user-credentials"
+              onClick={this.logOut}>
+              Log Out
+            </button>
+          ) : (
+            <div className="user-credentials">
+              <button onClick={this.toggleShowLogIn}>Log In</button>
+              <button
+                onClick={this.toggleShowNewUserForm}
+                className="create-act button"
+                >
+                Create Account
+                </button>
+                <NewUserForm
+                  showNewUserForm={showNewUserForm}
+                  toggleShowNewUserForm={this.toggleShowNewUserForm}
+                  logIn={this.logIn}
+                />
+              </div>
+            )}
+          {showLogIn ? <UserLogin logIn={this.logIn}/> : null}
         </header>
         <Router>
           <div>
             <nav>
               <ul>
                 <li>
-                  <NavLink exact={true} to="/">Home</NavLink>
+                  <NavLink exact={true} to="/">
+                    Home
+                  </NavLink>
                 </li>
                 <li>
-                  <NavLink exact={true} to="/pickups">All Pick Up Games</NavLink>
+                  <NavLink exact={true} to="/pickups">
+                    All Pick Up Games
+                  </NavLink>
                 </li>
                 <li>
-                  <NavLink exact={true} to="/addpickup">Create a New Pick Up Game</NavLink>
+                  <NavLink exact={true} to="/addpickup">
+                    Create a New Pick Up Game
+                  </NavLink>
                 </li>
               </ul>
             </nav>
             <div className="containers">
-              <Route exact={true} path="/" component={() => <HomePage loggedIn={loggedIn}/>} />
-              <Route path="/pickups" component={() => <PickUpContainer userLat={userLat} userLng={userLng} loggedIn={loggedIn}/>} />
-              <Route path="/addpickup" component={() => <NewPickUpForm userLat={userLat} userLng={userLng} userId={userId} loggedIn={loggedIn}/>} />
+              <Route
+                exact={true}
+                path="/"
+                component={() => <HomePage loggedIn={loggedIn}/>}
+              />
+              <Route
+                path="/pickups"
+                component={() => <PickUpContainer
+                  userLat={userLat}
+                  userLng={userLng}
+                  loggedIn={loggedIn}
+                />}
+              />
+              <Route
+                path="/addpickup"
+                component={() => <NewPickUpForm
+                  userLat={userLat}
+                  userLng={userLng}
+                  userId={userId}
+                  loggedIn={loggedIn}
+                />}
+              />
             </div>
           </div>
         </Router>
-      </div>
+      </>
     )
   }
 }

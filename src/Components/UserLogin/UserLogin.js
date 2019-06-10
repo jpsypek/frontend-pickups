@@ -13,7 +13,7 @@ class UserLogin extends Component {
   }
 
   handleChange = (event) => {
-    const {name, value} = event.target
+    const { name, value } = event.target
     this.setState({
       [name]: value
     })
@@ -21,7 +21,7 @@ class UserLogin extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    const {password, email} = this.state
+    const { password, email } = this.state
     fetch('http://localhost:3000/api/v1/login', {
       method: 'POST',
       headers: {
@@ -35,7 +35,7 @@ class UserLogin extends Component {
       .then(response => response.json())
       .then(data => this.handleLogIn(data))
       .catch(error => console.error(error))
-    }
+  }
 
     handleLogIn = (data) => {
       if (data.user) {
@@ -50,19 +50,32 @@ class UserLogin extends Component {
     }
 
   render() {
-    const {notFound, email, password} = this.state
+    const { notFound, email, password } = this.state
 
     return (
       <div>
         <div className="user-search">
           <div id="form">
             <form className="user-login-form" onSubmit={this.handleSubmit}>
-              <input name="email" placeholder="Enter your email" value={email} onChange={this.handleChange} />
-              <input type="password" name="password" placeholder="Enter your password" value={password} onChange={this.handleChange} />
+              <input
+                name="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={this.handleChange}
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={this.handleChange}
+              />
               <button className="button" type="submit">Log In</button>
             </form>
           </div>
-          {notFound ? <p id="error">The entered email or password were incorrect. Please try again.</p> : null}
+          {notFound ?
+            <p id="error">The entered email or password were incorrect. Please try again.</p>
+            : null}
         </div>
       </div>
     )

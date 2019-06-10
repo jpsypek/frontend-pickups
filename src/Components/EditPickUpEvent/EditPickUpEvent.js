@@ -6,8 +6,8 @@ import './EditPickUpEvent.css'
 class EditPickUpEvent extends Component {
   constructor(props) {
     super(props)
-    const {sport, time, date, skill_level, location, latitude, longitude, id} = this.props
-    this.state = {sport, time, date, skill_level, location, latitude, longitude, id}
+    const {sport, time, skill_level, latitude, longitude, id} = this.props
+    this.state = {sport, time, skill_level, latitude, longitude, id}
   }
 
   handleMapClick = (event) => {
@@ -40,7 +40,7 @@ class EditPickUpEvent extends Component {
 
   render() {
 
-    const {sport, date, time, skill_level, location, latitude, longitude} = this.state
+    const {sport, time, skill_level, latitude, longitude} = this.state
     const API_KEY = `${process.env.REACT_APP_MAPS_API_KEY}`
 
     return(
@@ -48,26 +48,22 @@ class EditPickUpEvent extends Component {
         <div className="event-modal-main">
           <form className="new-pickup-form" onSubmit={this.handleSubmit}>
             <label>Pick Up Date</label>
-              <input name="date" value={date} onChange={this.handleChange} />
+              <input name="time" value={time} onChange={this.handleChange} />
             <label>Sport</label>
               <select name="sport" value={sport} onChange={this.handleChange}>
-                <option></option>
                 <option>Soccer</option>
                 <option>Spikeball</option>
                 <option>Basketball</option>
                 <option>Kickball</option>
               </select>
             <label>Pick Up Time</label>
-                <input name="time" value={time} onChange={this.handleChange} />
+              <input name="time" value={time} onChange={this.handleChange} />
             <label>Skill Level</label>
               <select name="skill_level" value={skill_level} onChange={this.handleChange}>
-                <option></option>
                 <option>Beginner</option>
                 <option>Intermediate</option>
                 <option>Advanced</option>
               </select>
-            <label>Location (specific park, gym, etc.)</label>
-              <input name="location" value={location} onChange={this.handleChange} />
             <div>
               <label>Please select the exact location on the map below:</label>
                 <div id="edit-event-map">

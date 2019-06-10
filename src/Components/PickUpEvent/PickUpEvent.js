@@ -8,26 +8,19 @@ import defaultBall from '../../markers/default.png'
 
 const PickUpEvent = (props) => {
 
-  const {toggleShowEventDetails, event} = props
-  
-  const icon = () => {
-    switch (event.sport) {
-      case "Spikeball":
-        return spikeball
-      case "Soccer":
-        return soccer
-      case "Basketball":
-        return basketball
-      case "Kickball":
-        return kickball
-      default:
-        return defaultBall
-    }
+  const { toggleShowEventDetails, event } = props
+
+  const iconHash = {
+    "Spikeball": spikeball,
+    "Soccer": soccer,
+    "Basketball": basketball,
+    "Kickball": kickball
   }
+
 
   return(
     <div className="marker" onClick={() => toggleShowEventDetails(event)}>
-      <img alt="event location" src={icon()} />
+      <img alt="event location" src={iconHash[event.sport] ? iconHash[event.sport] : defaultBall} />
     </div>
   )
 }

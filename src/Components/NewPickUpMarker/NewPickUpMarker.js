@@ -8,25 +8,18 @@ import defaultBall from '../../markers/default.png'
 
 const NewPickUpMarker = (props) => {
 
-  const icon = () => {
-    switch (props.sport) {
-      case "Spikeball":
-        return spikeball
-      case "Soccer":
-        return soccer
-      case "Basketball":
-        return basketball
-      case "Kickball":
-        return kickball
-      default:
-        return defaultBall
-      }
-    }
+  const iconHash = {
+    "Spikeball": spikeball,
+    "Soccer": soccer,
+    "Basketball": basketball,
+    "Kickball": kickball
+  }
 
-  return (
-    <div className="marker" >
-      <img alt="event location" src={icon()} />
+  return(
+    <div className="marker">
+      <img alt="event location" src={iconHash[props.sport] ? iconHash[props.sport] : defaultBall} />
     </div>
   )
 }
+
 export default NewPickUpMarker

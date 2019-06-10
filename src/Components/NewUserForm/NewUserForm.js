@@ -14,7 +14,7 @@ class NewUserForm extends Component {
   }
 
   handleChange = (event) => {
-    const {name, value} = event.target
+    const { name, value } = event.target
     this.setState({
       [name]: value
     })
@@ -22,7 +22,7 @@ class NewUserForm extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    const {email, password, first_name, last_name, bio} = this.state
+    const { email, password, first_name, last_name, bio } = this.state
     fetch('http://localhost:3000/api/v1/users', {
       method: 'POST',
       headers: {
@@ -39,13 +39,13 @@ class NewUserForm extends Component {
         }
       })
     })
-    .then(response => response.json())
-    .then(data => this.newUserEvent(data))
-    .catch(error => console.error(error))
+      .then(response => response.json())
+      .then(data => this.newUserEvent(data))
+      .catch(error => console.error(error))
   }
 
   newUserEvent = (data) => {
-    const {toggleShowNewUserForm, logIn} = this.props
+    const { toggleShowNewUserForm, logIn } = this.props
     if (data.user) {
       toggleShowNewUserForm()
       logIn(data.user.id, data.jwt)
@@ -58,12 +58,11 @@ class NewUserForm extends Component {
   }
 
   render() {
-
-    const {showNewUserForm, toggleShowNewUserForm} = this.props
-    const {email, password, first_name, last_name, bio, showError} = this.state
+    const { showNewUserForm, toggleShowNewUserForm } = this.props
+    const { email, password, first_name, last_name, bio, showError } = this.state
 
     return(
-      <div>
+      <React.Fragment>
         {showNewUserForm ?
           <div className="modal">
             <div className="modal-main">
@@ -85,7 +84,7 @@ class NewUserForm extends Component {
             </div>
           </div> :
         null}
-      </div>
+      </React.Fragment>
     )
   }
 }

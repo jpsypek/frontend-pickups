@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import GoogleMap from 'google-map-react'
 import './NewPickUpForm.css'
 import NewPickUpMarker from '../NewPickUpMarker/NewPickUpMarker'
+import flatpickr from 'flatpickr'
 
 class NewPickUpForm extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class NewPickUpForm extends Component {
   }
 
   handleChange = (event) => {
-    const {name, value} = event.target
+    const { name, value } = event.target
     this.setState({
       [name]: value
     })
@@ -68,60 +69,59 @@ class NewPickUpForm extends Component {
   }
 
   render() {
+    const { sport, date, time, skill_level, latitude, longitude } = this.state
+    const { loggedIn, userLat, userLng } = this.props
+    const API_KEY = process.env.REACT_APP_MAPS_API_KEY
 
-    const {sport, date, time, skill_level, location, latitude, longitude} = this.state
-    const {loggedIn, userLat, userLng} = this.props
-    const API_KEY = `${process.env.REACT_APP_MAPS_API_KEY}`
-
-    return(
-      <div>
+    return (
+      <React.Fragment>
         {loggedIn ?
           <div>
             <form className="new-pickup-form" onSubmit={this.handleSubmit}>
               <label>Pick Up Date</label>
-                <input name="date" value={date} onChange={this.handleChange} />
+              flatpickr("#myID")
               <label>Sport</label>
                 <select name="sport" value={sport} onChange={this.handleChange}>
-                  <option></option>
+                  <option hidden="true">Choose Sport</option>
+                  <option disabled="disabled">Choose Sport</option>
                   <option>Soccer</option>
                   <option>Spikeball</option>
                   <option>Basketball</option>
                   <option>Kickball</option>
                 </select>
                 <label>Pick Up Time</label>
-                  <input name="time" value={time} onChange={this.handleChange} />
+                <input name="time" value={time} onChange={this.handleChange} />
                 <label>Skill Level</label>
                   <select name="skill_level" value={skill_level} onChange={this.handleChange}>
-                    <option></option>
+                    <option hidden="true">Choose Skill Level</option>
+                    <option disabled="disabled">Choose Skill Level</option>
                     <option>Beginner</option>
                     <option>Intermediate</option>
                     <option>Advanced</option>
                   </select>
-                <label>Location (specific park, gym, etc.)</label>
-                  <input name="location" value={location} onChange={this.handleChange} />
                 <div>
                   <label>Please select the exact location on the map below:</label>
-                    <div id="new-event-map">
-                      <GoogleMap
-                        onClick={this.handleMapClick}
-                        bootstrapURLKeys={{ key: API_KEY }}
-                        defaultCenter={{
-                        lat: userLat,
-                        lng: userLng}}
-                        defaultZoom={13}
-                        yesIWantToUseGoogleMapApiInternals
-                      >
+                  <div id="new-event-map">
+                    <GoogleMap
+                      onClick={this.handleMapClick}
+                      bootstrapURLKeys={{ key: API_KEY }}
+                      defaultCenter={{
+                      lat: userLat,
+                      lng: userLng}}
+                      defaultZoom={13}
+                      yesIWantToUseGoogleMapApiInternals
+                    >
                       {latitude && longitude ?
                         <NewPickUpMarker lat={latitude} lng={longitude} sport={sport} /> :
                         null}
-                      </GoogleMap>
-                    </div>
+                    </GoogleMap>
+                  </div>
                 </div>
                 <button type="submit">Add Event</button>
             </form>
           </div> :
           <p>You must be logged in to access this content.</p>}
-      </div>
+      </React.Fragment>
     )
   }
 }
