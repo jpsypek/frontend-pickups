@@ -5,6 +5,7 @@ import PickUpEvent from '../PickUpEvent/PickUpEvent'
 import EventFilter from '../EventFilter/EventFilter'
 import PickUpEventDetails from '../PickUpEventDetails/PickUpEventDetails'
 import EditPickUpEvent from '../EditPickUpEvent/EditPickUpEvent'
+import { getEventsFetch } from '../../utility/fetch'
 import star from '../../markers/star.png'
 
 class PickUpContainer extends Component {
@@ -12,6 +13,7 @@ class PickUpContainer extends Component {
     super(props)
     this.state = {
       events: [],
+      filteredEvents: [],
       eventForDetail: {},
       showEventDetail: false,
       showEventEdit: false
@@ -24,16 +26,10 @@ class PickUpContainer extends Component {
 
   getEvents = () => {
     if (this.props.loggedIn) {
-      fetch('http://localhost:3000/api/v1/events', {
-        method: 'GET',
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("pickUpLogin")}`
-        }
-      })
-      .then(response => response.json())
-      .then(events => this.setState({events}))
-      .catch(error=>console.error(error))
+      getEventsFetch()
+        .then(response => response.json())
+        .then(events => this.setState({events, filteredEvents: events}))
+        .catch(error=>console.error(error))
     }
   }
 

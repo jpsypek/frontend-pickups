@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './UserLogin.css'
+import { postLoginFetch } from '../../utility/fetch'
 
 class UserLogin extends Component {
   constructor(props) {
@@ -22,16 +23,7 @@ class UserLogin extends Component {
   handleSubmit = (event) => {
     event.preventDefault()
     const { password, email } = this.state
-    fetch('http://localhost:3000/api/v1/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify({
-        user: {email, password}
-      })
-    })
+    postLoginFetch(email, password)
       .then(response => response.json())
       .then(data => this.handleLogIn(data))
       .catch(error => console.error(error))

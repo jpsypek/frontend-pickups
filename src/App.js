@@ -63,7 +63,7 @@ class App extends Component {
     const { loggedIn, showLogIn, showNewUserForm, userLat, userLng, userId } = this.state
 
     return(
-      <>
+      <React.Fragment>
         <header>
           <h1 className="app-name">Pick Up Sports!</h1>
           {loggedIn ? (
@@ -137,7 +137,7 @@ class App extends Component {
             </div>
           </div>
         </Router>
-      </>
+      </React.Fragment>
     )
   }
 }

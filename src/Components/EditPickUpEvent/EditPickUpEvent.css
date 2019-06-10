@@ -4,3 +4,8 @@
   margin: 0 auto;
   z-index: 0
 }
+
+input, select{
+  display: block;
+  margin: 0 0;
+}

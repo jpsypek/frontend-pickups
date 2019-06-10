@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { postUserFetch } from '../../utility/fetch'
 
 class NewUserForm extends Component {
   constructor(props) {
@@ -23,22 +24,7 @@ class NewUserForm extends Component {
   handleSubmit = (event) => {
     event.preventDefault()
     const { email, password, first_name, last_name, bio } = this.state
-    fetch('http://localhost:3000/api/v1/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify({
-        user: {
-          email,
-          password,
-          first_name,
-          last_name,
-          bio
-        }
-      })
-    })
+    postUserFetch(email, password, first_name, last_name, bio)
       .then(response => response.json())
       .then(data => this.newUserEvent(data))
       .catch(error => console.error(error))

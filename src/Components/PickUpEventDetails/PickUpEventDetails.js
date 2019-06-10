@@ -1,28 +1,17 @@
 import React, { Component } from 'react'
 import './PickUpEventDetails.css'
 import star from '../../markers/star.png'
+import { postUserEventFetch, deleteUserEventFetch, deleteEventFetch } from '../../utility/fetch'
 import dateFormat from 'dateformat'
 
 class PickUpEventDetails extends Component {
 
   addUserToEvent = () => {
     const { id } = this.props
-    fetch('http://localhost:3000/api/v1/user_events', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify({
-        user_event: {
-          user_id: localStorage.getItem("pickUpUser"),
-		      event_id: id
-        }
-      })
-    })
-    .then(response => response.json())
-	  .then(data => this.props.updateUsers(id, data.user))
-    .catch(error => console.error(error))
+    postUserEventFetch(id)
+      .then(response => response.json())
+  	  .then(data => this.props.updateUsers(id, data.user))
+      .catch(error => console.error(error))
   }
 
   removeUserFromEvent = () => {
@@ -30,32 +19,16 @@ class PickUpEventDetails extends Component {
     const userId = parseInt(localStorage.getItem("pickUpUser"))
     const user_event = user_events.find((user_event) => {
       return user_event.user_id === userId})
-    fetch(`http://localhost:3000/api/v1/user_events/${user_event.id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${localStorage.getItem("pickUpLogin")}`
-      },
-      body: JSON.stringify({id: user_event.id})
-    })
-    .then(() => this.props.removeUser(id, userId))
-    .catch(error => console.error(error))
+    deleteUserEventFetch(user_event.id)
+      .then(() => this.props.removeUser(id, userId))
+      .catch(error => console.error(error))
   }
 
   deleteEvent = () => {
     const {id} = this.props
-    fetch(`http://localhost:3000/api/v1/events/${this.props.id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${localStorage.getItem("pickUpLogin")}`
-      },
-      body: JSON.stringify({id})
-    })
-    .then(() => this.props.removeEvent(id))
-    .catch(error => console.error(error))
+    deleteEventFetch(id)
+      .then(() => this.props.removeEvent(id))
+      .catch(error => console.error(error))
   }
 
   closeDetailsBox = () => {
@@ -63,7 +36,6 @@ class PickUpEventDetails extends Component {
   }
 
   render() {
-
     const { sport, skill_level, users, owner, toggleShowEventEdit } = this.props
     const utcTime = new Date(this.props.time)
     const time = dateFormat(utcTime, "h:MM TT")
@@ -78,7 +50,7 @@ class PickUpEventDetails extends Component {
           <p>Date: {date}</p>
           <p>Time: {time}</p>
           <p>Skill Level: {skill_level}</p>
-          <p>{users.length} people attending!</p>
+          <p>{users.length === 1 ? "1 person" : `${users.length} people`}  attending!</p>
           <div>
             {users.find((user) => user.id === parseInt(localStorage.getItem("pickUpUser"))) ?
               <div>

@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 import GoogleMapReact from 'google-map-react'
 import NewPickUpMarker from '../NewPickUpMarker/NewPickUpMarker'
 import './EditPickUpEvent.css'
+import { patchEventFetch } from '../../utility/fetch'
+import Flatpickr from 'react-flatpickr'
+import 'flatpickr/dist/themes/dark.css'
 
 class EditPickUpEvent extends Component {
   constructor(props) {
     super(props)
-    const {sport, time, skill_level, latitude, longitude, id} = this.props
+    const { sport, time, skill_level, latitude, longitude, id } = this.props
     this.state = {sport, time, skill_level, latitude, longitude, id}
   }
 
@@ -24,31 +27,27 @@ class EditPickUpEvent extends Component {
     })
   }
 
+  handleCalendarChange = (event) => {
+    const utcDate = new Date(event).toUTCString()
+    this.setState({time: utcDate})
+  }
+
   handleSubmit = (event) => {
     event.preventDefault()
-    fetch(`http://localhost:3000/api/v1/events/${this.state.id}`, {
-      method: "PATCH",
-      headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("pickUpLogin")}`
-        },
-        body: JSON.stringify(this.state)
-      })
+    patchEventFetch(this.state)
       .then(() => this.props.updateEvent(this.state))
       .catch(error => console.error(error))
     }
 
   render() {
-
     const {sport, time, skill_level, latitude, longitude} = this.state
+    const { toggleShowEventEdit } = this.props
     const API_KEY = `${process.env.REACT_APP_MAPS_API_KEY}`
 
     return(
       <div ref="modal" className="event-modal">
         <div className="event-modal-main">
           <form className="new-pickup-form" onSubmit={this.handleSubmit}>
-            <label>Pick Up Date</label>
-              <input name="time" value={time} onChange={this.handleChange} />
             <label>Sport</label>
               <select name="sport" value={sport} onChange={this.handleChange}>
                 <option>Soccer</option>
@@ -56,8 +55,10 @@ class EditPickUpEvent extends Component {
                 <option>Basketball</option>
                 <option>Kickball</option>
               </select>
-            <label>Pick Up Time</label>
-              <input name="time" value={time} onChange={this.handleChange} />
+            <label>Event time</label>
+            <Flatpickr data-enable-time
+              value={time}
+              onChange={this.handleCalendarChange}/>
             <label>Skill Level</label>
               <select name="skill_level" value={skill_level} onChange={this.handleChange}>
                 <option>Beginner</option>
@@ -82,7 +83,16 @@ class EditPickUpEvent extends Component {
                   </GoogleMapReact>
                 </div>
             </div>
-            <button type="submit">Edit Event</button>
+            <button
+              className="button modal-button"
+              type="submit">
+              Edit Event
+            </button>
+            <button
+              className="button modal-button"
+              onClick={toggleShowEventEdit}>
+              Close
+            </button>
           </form>
         </div>
       </div>
