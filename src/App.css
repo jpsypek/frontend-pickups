@@ -98,7 +98,7 @@ li {
   float: center;
   display: inline;
   /* padding-top: 8rem; */
-  margin: 1rem 0.5rem;
+  margin: 0 0.5rem;
 }
 
 li a {

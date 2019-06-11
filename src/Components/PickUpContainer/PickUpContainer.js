@@ -7,6 +7,8 @@ import PickUpEventDetails from '../PickUpEventDetails/PickUpEventDetails'
 import EditPickUpEvent from '../EditPickUpEvent/EditPickUpEvent'
 import { getEventsFetch } from '../../utility/fetch'
 import star from '../../markers/star.png'
+import { css } from '@emotion/core'
+import { CircleLoader } from 'react-spinners'
 
 class PickUpContainer extends Component {
   constructor(props) {
@@ -16,21 +18,29 @@ class PickUpContainer extends Component {
       filteredEvents: [],
       eventForDetail: {},
       showEventDetail: false,
-      showEventEdit: false
+      showEventEdit: false,
+      loading: true
     }
   }
 
   componentDidMount = () => {
-    this.getEvents()
-  }
-
-  getEvents = () => {
     if (this.props.loggedIn) {
       getEventsFetch()
         .then(response => response.json())
         .then(events => this.setState({events, filteredEvents: events}))
         .catch(error=>console.error(error))
     }
+  }
+
+  handleMapLoaded = () => {
+    this.setState({loading: false})
+  }
+
+  getEvents = () => {
+    getEventsFetch()
+      .then(response => response.json())
+      .then(events => this.setState({events}))
+      .catch(error=>console.error(error))
   }
 
   updateUsers = (eventId, user) => {
@@ -65,12 +75,17 @@ class PickUpContainer extends Component {
   }
 
   removeEvent = (eventId) => {
-    const { events } = this.state
+    const { events, filteredEvents } = this.state
     const updatedEvents = events.filter((event) => event.id !== eventId)
+    const updatedFilteredEvents = filteredEvents.filter((event) => event.id !== eventId)
 
-    this.setState({events: updatedEvents})
+    this.setState({events: updatedEvents, filteredEvents: updatedFilteredEvents})
     this.getEvents()
     this.toggleShowEventDetails()
+  }
+
+  filterEvents = (filteredEvents) => {
+    this.setState({filteredEvents})
   }
 
   toggleShowEventDetails = (event) => {
@@ -86,9 +101,13 @@ class PickUpContainer extends Component {
 
   render() {
     const { loggedIn, userLat, userLng } = this.props
-    const { events, showEventDetail, eventForDetail, showEventEdit } = this.state
+    const { events, showEventDetail, eventForDetail, showEventEdit, filteredEvents, loading } = this.state
     const API_KEY = process.env.REACT_APP_MAPS_API_KEY
-    const eventItems = events.map((event) => {
+    const override = css`
+      display: block;
+      margin: auto;
+    `
+    const eventItems = filteredEvents.map((event) => {
       return <PickUpEvent
         key={event.id + Date.now()}
         lat={event.latitude}
@@ -101,9 +120,25 @@ class PickUpContainer extends Component {
 
     return(
       <React.Fragment >
+        { loading ?
+          <div className='sweet-loading'>
+            <CircleLoader
+              css={override}
+              sizeUnit={"px"}
+              size={150}
+              color={'#123abc'}
+              loading={loading}
+            />
+          </div> :
+          null }
         {loggedIn ?
           <div>
-            <EventFilter />
+            <EventFilter
+              filterEvents={this.filterEvents}
+              filteredEvents={filteredEvents}
+              events={events}
+              userLat={userLat}
+              userLng={userLng}/>
             <div id="events-map">
               <GoogleMapReact
                 bootstrapURLKeys={{ key: API_KEY }}
@@ -111,6 +146,7 @@ class PickUpContainer extends Component {
                 lat: userLat,
                 lng: userLng}}
                 defaultZoom={12}
+                onGoogleApiLoaded={this.handleMapLoaded}
                 yesIWantToUseGoogleMapApiInternals
               >
               {eventItems}
@@ -134,7 +170,7 @@ class PickUpContainer extends Component {
               </GoogleMapReact>
           </div>
         <div className="star-explanation">
-          <img id="star-for-explanation" alt="owned-event" src={star} /> <span className="star-explanation">* Events you created</span>
+          <img id="star-for-explanation" alt="owned-event" src={star} /> <span className="star-explanation">Events you created</span>
         </div>
       </div> :
         <p>You must be logged in to access this content.</p>}

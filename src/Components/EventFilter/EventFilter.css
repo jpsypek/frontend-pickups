@@ -1,0 +1,25 @@
+#event-filter-bar {
+  position: relative;
+  width: 65%;
+  height: 4rem;
+  margin: 0 auto;
+  padding-top: 2rem;
+  display: inline;
+}
+
+.filter-input {
+  display: inline;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+button {
+  margin-left: .5rem
+}
+
+.filter-dropdown option {
+  background-color: rgba(25, 65, 137, 0.85);
+  border-radius: 10px;
+}
