@@ -10,7 +10,7 @@ class PickUpEventDetails extends Component {
     const { id } = this.props
     postUserEventFetch(id)
       .then(response => response.json())
-  	  .then(data => this.props.updateUsers(id, data.user))
+  	  .then(data => this.props.updateUsers(data.event, data.user))
       .catch(error => console.error(error))
   }
 

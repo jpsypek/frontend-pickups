@@ -117,3 +117,21 @@ li a:hover {
   position: relative;
   top: 10rem;
 }
+
+.button {
+  color: #fff !important;
+  font-size: 12px;
+  background: rgba(25, 65, 137, 0.85);
+  padding: 5px;
+  border-radius: 35px;
+  display: block;
+  border: none;
+  margin: 2px auto;
+}
+
+.button:hover {
+  text-shadow: 0px 0px 6px rgba(255, 255, 255, 1);
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  transition: all 0.3s ease 0s;
+}

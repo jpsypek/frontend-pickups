@@ -65,8 +65,7 @@ class NewPickUpForm extends Component {
         {loggedIn ?
           <div>
             <form className="new-pickup-form" onSubmit={this.handleSubmit}>
-              <label>Sport</label>
-                <select name="sport" value={sport} onChange={this.handleChange}>
+                <select className="new-dropdown" name="sport" value={sport} onChange={this.handleChange}>
                   <option hidden="true">Choose Sport</option>
                   <option disabled="disabled">Choose Sport</option>
                   <option>Soccer</option>
@@ -74,12 +73,11 @@ class NewPickUpForm extends Component {
                   <option>Basketball</option>
                   <option>Kickball</option>
                 </select>
-                <label>Pick Up Date</label>
                 <Flatpickr data-enable-time
                   value={time}
-                  onChange={this.handleCalendarChange}/>
-                <label>Skill Level</label>
-                  <select name="skill_level" value={skill_level} onChange={this.handleChange}>
+                  onChange={this.handleCalendarChange}
+                  placeholder="Pick-up's date"/>
+                  <select className="new-dropdown" name="skill_level" value={skill_level} onChange={this.handleChange}>
                     <option hidden="true">Choose Skill Level</option>
                     <option disabled="disabled">Choose Skill Level</option>
                     <option>Beginner</option>
@@ -104,7 +102,7 @@ class NewPickUpForm extends Component {
                     </GoogleMap>
                   </div>
                 </div>
-                <button type="submit">Add Event</button>
+                <button className="button" type="submit">Add Event</button>
             </form>
           </div> :
           <p>You must be logged in to access this content.</p>}

@@ -35,7 +35,8 @@ class EditPickUpEvent extends Component {
   handleSubmit = (event) => {
     event.preventDefault()
     patchEventFetch(this.state)
-      .then(() => this.props.updateEvent(this.state))
+      .then(response => response.json())
+      .then(data => this.props.updateEvent(data))
       .catch(error => console.error(error))
     }
 

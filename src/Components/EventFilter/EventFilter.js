@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './EventFilter.css'
-import { getEventsFetch } from '../../utility/fetch'
 import getDistance from 'geolib/es/getDistance';
 
 class EventFilter extends Component {
@@ -64,7 +63,7 @@ class EventFilter extends Component {
   }
 
   filterEventsByDropdowns = (eventsToFilter) => {
-    const { sport, skill_level, attending } = this.state
+    const { sport, skill_level } = this.state
     const filteredEvents = eventsToFilter.filter((event) => {
       return event.sport.includes(sport) && event.skill_level.includes(skill_level)
     })
@@ -87,31 +86,31 @@ class EventFilter extends Component {
     return(
       <form id="event-filter-bar">
         <select className="filter-input filter-dropdown" name="sport" value={sport} onChange={this.handleChange}>
-          <option hidden="true">Any Sport</option>
+          <option hidden={true}>Any Sport</option>
           <option disabled="disabled">Any Sport</option>
-          <option>Soccer</option>
+          <option className="filter-dropdown">Soccer</option>
           <option>Spikeball</option>
           <option>Basketball</option>
           <option>Kickball</option>
         </select>
-        <select className="filter-input" name="distance" value={distance} onChange={this.handleChange}>
-          <option hidden="true">Within Any Distance</option>
+        <select className="filter-input filter-dropdown" name="distance" value={distance} onChange={this.handleChange}>
+          <option hidden={true}>Within Any Distance</option>
           <option disabled="disabled">Within Any Distance</option>
           <option value="1">1 mile</option>
           <option value="3">3 miles</option>
           <option value="5">5 miles</option>
           <option value="10">10 miles</option>
         </select>
-        <select className="filter-input" name="skill_level" value={skill_level} onChange={this.handleChange}>
-          <option hidden="true">Any Skill Level</option>
+        <select className="filter-input filter-dropdown" name="skill_level" value={skill_level} onChange={this.handleChange}>
+          <option hidden={true}>Any Skill Level</option>
           <option disabled="disabled">Any Skill Level</option>
           <option>Beginner</option>
           <option>Intermediate</option>
           <option>Advanced</option>
         </select>
-        <label className="filter-input">Events you're attending? </label>
+        <label className="filter-input attending-label">Events you're attending? </label>
         <input className="filter-input" name="attending" checked={attending ? "checked" : null} type="checkbox" onChange={this.handleClick} />
-        <button onClick={this.clearFilter}>Clear Filter</button>
+        <button className="button" id="clear-button" onClick={this.clearFilter}>Clear Filter</button>
       </form>
     )
   }

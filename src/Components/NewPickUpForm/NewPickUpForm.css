@@ -4,8 +4,15 @@
 }
 
 #new-event-map {
-  width: 30%;
-  height: 30vh;
+  width: 40%;
+  height: 40vh;
   margin: 0 auto;
-  z-index: 0
+  z-index: 0;
+  margin: 0.8rem auto;
+}
+
+.new-dropdown {
+  border: 0;
+  font-size: 14px;
+  margin: 0.8rem auto;
 }

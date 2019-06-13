@@ -43,35 +43,41 @@ class PickUpContainer extends Component {
       .catch(error=>console.error(error))
   }
 
-  updateUsers = (eventId, user) => {
-    const { events } = this.state
-    const eventToUpdate = events.find((event) => event.id === eventId)
-    eventToUpdate.users.push(user)
-    const unchangedEvents = events.filter((event) => event.id !== eventId)
+  updateUsers = (updatedEvent, user) => {
+    const { events, filteredEvents } = this.state
+    const unchangedEvents = this.filterUnchangedEvents(events, updatedEvent.id)
+    const unchangedFilteredEvents = this.filterUnchangedEvents(filteredEvents, updatedEvent.id)
 
-    this.setStateWithUpdatedEvent(unchangedEvents, eventToUpdate)
+    this.setStateWithUpdatedEvent(unchangedEvents, unchangedFilteredEvents, updatedEvent)
   }
 
   removeUser = (eventId, userId) => {
-    const { events } = this.state
+    const { events, filteredEvents } = this.state
     const eventToUpdate = events.find((event) => event.id === eventId)
-    const unchangedEvents = events.filter((event) => event.id !== eventId)
-    const eventWithRemovedUser = eventToUpdate.users.filter((user) => user.id !== userId)
-
-    this.setStateWithUpdatedEvent(unchangedEvents, eventWithRemovedUser)
+    eventToUpdate.users = eventToUpdate.users.filter((user) => user.id !== userId)
+    const unchangedEvents = this.filterUnchangedEvents(events, eventId)
+    const unchangedFilteredEvents = this.filterUnchangedEvents(filteredEvents, eventId)
+    this.setStateWithUpdatedEvent(unchangedEvents, unchangedFilteredEvents, eventToUpdate)
   }
 
   updateEvent = (updatedEvent) => {
-    const { events } = this.state
-    const unchangedEvents = events.filter((event) => event.id !== updatedEvent.id)
-    this.setStateWithUpdatedEvent(unchangedEvents, updatedEvent)
-    this.toggleShowEventEdit({})
+    const { events, filteredEvents } = this.state
+    const unchangedEvents = this.filterUnchangedEvents(events, updatedEvent.id)
+    const unchangedFilteredEvents = this.filterUnchangedEvents(filteredEvents, updatedEvent.id)
+    this.setStateWithUpdatedEvent(unchangedEvents, unchangedFilteredEvents, updatedEvent)
+    this.toggleShowEventEdit()
   }
 
-  setStateWithUpdatedEvent = (unchangedEvents, updatedEvent) => {
-    this.setState({events: [...unchangedEvents, updatedEvent]})
+  filterUnchangedEvents = (events, updatedEventId) => {
+    return events.filter((event) => event.id !== updatedEventId)
+  }
+
+  setStateWithUpdatedEvent = (unchangedEvents, unchangedFilteredEvents, updatedEvent) => {
+    this.setState({
+      events: [...unchangedEvents, updatedEvent],
+      filteredEvents: [...unchangedFilteredEvents, updatedEvent]})
     this.getEvents()
-    this.toggleShowEventDetails()
+    this.toggleShowEventDetails({})
   }
 
   removeEvent = (eventId) => {
@@ -81,7 +87,7 @@ class PickUpContainer extends Component {
 
     this.setState({events: updatedEvents, filteredEvents: updatedFilteredEvents})
     this.getEvents()
-    this.toggleShowEventDetails()
+    this.toggleShowEventDetails({})
   }
 
   filterEvents = (filteredEvents) => {
@@ -120,7 +126,7 @@ class PickUpContainer extends Component {
 
     return(
       <React.Fragment >
-        { loading ?
+        { loading && loggedIn ?
           <div className='sweet-loading'>
             <CircleLoader
               css={override}

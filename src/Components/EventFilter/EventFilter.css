@@ -13,13 +13,28 @@
   margin-bottom: 1rem;
   margin-left: 0.25rem;
   margin-right: 0.25rem;
+  padding: 6px;
 }
 
 button {
   margin-left: .5rem
 }
 
-.filter-dropdown option {
-  background-color: rgba(25, 65, 137, 0.85);
-  border-radius: 10px;
+#clear-button {
+  display: inline;
+  margin-left: 4px
+}
+
+.filter-dropdown {
+  -webkit-appearance: none;
+  border: 0;
+  font-size: 14px;
+}
+
+.dropdown-option {
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
+.attending-label {
+  font-size: 14px;
 }

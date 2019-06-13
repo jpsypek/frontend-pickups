@@ -74,7 +74,7 @@ class App extends Component {
             </button>
           ) : (
             <div className="user-credentials">
-              <button onClick={this.toggleShowLogIn}>Log In</button>
+              <button className="button" onClick={this.toggleShowLogIn}>Log In</button>
               <button
                 onClick={this.toggleShowNewUserForm}
                 className="create-act button"
