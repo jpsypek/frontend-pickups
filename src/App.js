@@ -66,13 +66,7 @@ class App extends Component {
       <React.Fragment>
         <header>
           <h1 className="app-name">Pick Up Sports!</h1>
-          {loggedIn ? (
-            <button
-              className="button log-out user-credentials"
-              onClick={this.logOut}>
-              Log Out
-            </button>
-          ) : (
+          {!loggedIn && !showLogIn ? (
             <div className="user-credentials">
               <button className="button" onClick={this.toggleShowLogIn}>Log In</button>
               <button
@@ -87,8 +81,23 @@ class App extends Component {
                   logIn={this.logIn}
                 />
               </div>
+            ) : (
+              <button
+                className="button log-out user-credentials"
+                onClick={this.logOut}>
+                Log Out
+              </button>
             )}
-          {showLogIn ? <UserLogin logIn={this.logIn}/> : null}
+          {showLogIn ?
+            <div>
+            <UserLogin toggleShowNewUserForm={this.toggleShowNewUserForm} logIn={this.logIn}/>
+              <NewUserForm
+                showNewUserForm={showNewUserForm}
+                toggleShowNewUserForm={this.toggleShowNewUserForm}
+                logIn={this.logIn}
+              />
+            </div>
+            : null}
         </header>
         <Router>
           <div>
