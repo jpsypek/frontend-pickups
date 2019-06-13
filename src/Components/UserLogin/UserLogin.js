@@ -8,8 +8,7 @@ class UserLogin extends Component {
     this.state = {
       email: "",
       password: "",
-      notFound: false,
-      showNewUserForm: false
+      notFound: false
     }
   }
 
@@ -50,20 +49,25 @@ class UserLogin extends Component {
           <div id="form">
             <form className="user-login-form" onSubmit={this.handleSubmit}>
               <input
+                id="email-login"
                 name="email"
                 placeholder="Enter your email"
                 value={email}
                 onChange={this.handleChange}
               />
               <input
+                id="password-login"
                 type="password"
                 name="password"
                 placeholder="Enter your password"
                 value={password}
                 onChange={this.handleChange}
               />
-              <button className="button" type="submit">Log In</button>
+            <button className="login-button button" type="submit">Log In</button>
             </form>
+            <button onClick={this.props.toggleShowNewUserForm} id="create-user-button" className="button">
+              Create Account
+            </button>
           </div>
           {notFound ?
             <p id="error">The entered email or password were incorrect. Please try again.</p>
