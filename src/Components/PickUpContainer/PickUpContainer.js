@@ -19,7 +19,8 @@ class PickUpContainer extends Component {
       eventForDetail: {},
       showEventDetail: false,
       showEventEdit: false,
-      loading: true
+      loading: true,
+      onlyAttending: false
     }
   }
 
@@ -52,12 +53,21 @@ class PickUpContainer extends Component {
   }
 
   removeUser = (eventId, userId) => {
-    const { events, filteredEvents } = this.state
+    const { events, filteredEvents, onlyAttending } = this.state
     const eventToUpdate = events.find((event) => event.id === eventId)
     eventToUpdate.users = eventToUpdate.users.filter((user) => user.id !== userId)
     const unchangedEvents = this.filterUnchangedEvents(events, eventId)
     const unchangedFilteredEvents = this.filterUnchangedEvents(filteredEvents, eventId)
-    this.setStateWithUpdatedEvent(unchangedEvents, unchangedFilteredEvents, eventToUpdate)
+    if (onlyAttending) {
+      this.setState({
+        events: [...unchangedEvents, eventToUpdate],
+        filteredEvents: unchangedFilteredEvents
+      })
+      this.getEvents()
+      this.toggleShowEventDetails()
+    } else {
+      this.setStateWithUpdatedEvent(unchangedEvents, unchangedFilteredEvents, eventToUpdate)
+    }
   }
 
   updateEvent = (updatedEvent) => {
@@ -75,7 +85,8 @@ class PickUpContainer extends Component {
   setStateWithUpdatedEvent = (unchangedEvents, unchangedFilteredEvents, updatedEvent) => {
     this.setState({
       events: [...unchangedEvents, updatedEvent],
-      filteredEvents: [...unchangedFilteredEvents, updatedEvent]})
+      filteredEvents: [...unchangedFilteredEvents, updatedEvent]
+    })
     this.getEvents()
     this.toggleShowEventDetails({})
   }
@@ -103,6 +114,10 @@ class PickUpContainer extends Component {
 
   toggleShowEventEdit = () => {
     this.setState({showEventEdit: !this.state.showEventEdit})
+  }
+
+  toggleOnlyAttending = () => {
+    this.setState({onlyAttending: !this.state.onlyAttending})
   }
 
   render() {
@@ -144,7 +159,8 @@ class PickUpContainer extends Component {
               filteredEvents={filteredEvents}
               events={events}
               userLat={userLat}
-              userLng={userLng}/>
+              userLng={userLng}
+              toggleOnlyAttending={this.toggleOnlyAttending}/>
             <div id="events-map">
               <GoogleMapReact
                 bootstrapURLKeys={{ key: API_KEY }}
