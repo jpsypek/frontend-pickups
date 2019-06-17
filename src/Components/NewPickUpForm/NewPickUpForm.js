@@ -73,8 +73,12 @@ class NewPickUpForm extends Component {
                   <option>Basketball</option>
                   <option>Kickball</option>
                 </select>
-                <Flatpickr data-enable-time
+                <Flatpickr
+                  data-enable-time
                   value={time}
+                  options={{
+                    dateFormat: "n/j/y h:i K",
+                  }}
                   onChange={this.handleCalendarChange}
                   placeholder="Pick-up's date"/>
                   <select className="new-dropdown" name="skill_level" value={skill_level} onChange={this.handleChange}>

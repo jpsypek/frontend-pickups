@@ -16,6 +16,7 @@ class PickUpContainer extends Component {
     this.state = {
       events: [],
       filteredEvents: [],
+      filteredAttending: false,
       eventForDetail: {},
       showEventDetail: false,
       showEventEdit: false,
@@ -52,12 +53,14 @@ class PickUpContainer extends Component {
   }
 
   removeUser = (eventId, userId) => {
-    const { events, filteredEvents } = this.state
+    const { events, filteredEvents, filteredAttending } = this.state
     const eventToUpdate = events.find((event) => event.id === eventId)
     eventToUpdate.users = eventToUpdate.users.filter((user) => user.id !== userId)
     const unchangedEvents = this.filterUnchangedEvents(events, eventId)
     const unchangedFilteredEvents = this.filterUnchangedEvents(filteredEvents, eventId)
-    this.setStateWithUpdatedEvent(unchangedEvents, unchangedFilteredEvents, eventToUpdate)
+    {filteredAttending
+      ? this.setStateWithoutUpdatedEvent(unchangedEvents, unchangedFilteredEvents, eventToUpdate)
+      : this.setStateWithUpdatedEvent(unchangedEvents, unchangedFilteredEvents, eventToUpdate)}
   }
 
   updateEvent = (updatedEvent) => {
@@ -77,6 +80,16 @@ class PickUpContainer extends Component {
       events: [...unchangedEvents, updatedEvent],
       filteredEvents: [...unchangedFilteredEvents, updatedEvent]})
     this.getEvents()
+    this.filterEvents(this.state.filteredEvents)
+    this.toggleShowEventDetails({})
+  }
+
+  setStateWithoutUpdatedEvent = (unchangedEvents, unchangedFilteredEvents, updatedEvent) => {
+    this.setState({
+      events: [...unchangedEvents, updatedEvent],
+      filteredEvents: [...unchangedFilteredEvents]})
+    this.getEvents()
+    this.filterEvents(this.state.filteredEvents)
     this.toggleShowEventDetails({})
   }
 
@@ -103,6 +116,10 @@ class PickUpContainer extends Component {
 
   toggleShowEventEdit = () => {
     this.setState({showEventEdit: !this.state.showEventEdit})
+  }
+
+  toggleFilteredAttending = () => {
+    this.setState({filteredAttending: !this.state.filteredAttending})
   }
 
   render() {
@@ -141,6 +158,7 @@ class PickUpContainer extends Component {
           <div>
             <EventFilter
               filterEvents={this.filterEvents}
+              toggleFilteredAttending={this.toggleFilteredAttending}
               filteredEvents={filteredEvents}
               events={events}
               userLat={userLat}

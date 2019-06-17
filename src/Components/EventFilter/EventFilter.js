@@ -3,6 +3,8 @@ import './EventFilter.css'
 import getDistance from 'geolib/es/getDistance'
 import Flatpickr from 'react-flatpickr'
 import 'flatpickr/dist/themes/dark.css'
+import dateFormat from 'dateformat'
+import _ from 'lodash'
 
 class EventFilter extends Component {
   constructor(props) {
@@ -12,7 +14,7 @@ class EventFilter extends Component {
       skill_level: "",
       attending: false,
       date: "",
-      distance: false
+      distance: ""
     }
   }
 
@@ -25,36 +27,59 @@ class EventFilter extends Component {
     })
   }
 
+  handleCalendarChange = (event) => {
+    const utcDate = new Date(event)
+    this.setState({
+      date: utcDate
+    }, () => {
+      this.eventsToBeFiltered()
+    })
+  }
+
   handleClick = () => {
+    this.props.toggleFilteredAttending()
     this.setState({attending: !this.state.attending}, () => {
       this.eventsToBeFiltered()
     })
   }
 
   eventsToBeFiltered = () => {
-    const { attending, distance } = this.state
-    if (attending && distance.length > 0) {
-      const eventsOfUser = this.filterByAttending(this.props.events)
-      const eventsWithinDistance = this.filterByDistance(eventsOfUser)
-      this.filterEventsByDropdowns(eventsWithinDistance)
-    } else if (attending) {
-      const eventsOfUser = this.filterByAttending(this.props.events)
-      this.filterEventsByDropdowns(eventsOfUser)
-    } else if (distance.length > 0) {
-      const eventsWithinDistance = this.filterByDistance(this.props.events)
-      this.filterEventsByDropdowns(eventsWithinDistance)
-    } else {
-      this.filterEventsByDropdowns(this.props.events)
+    const { attending, distance, date, sport, skill_level } = this.state
+    let filteredEvents = this.props.events
+    if (attending) {
+      filteredEvents = this.filterEventsByAttending(filteredEvents)
     }
+    if (date !== "") {
+      filteredEvents = this.filterEventsByDate(filteredEvents)
+    }
+    if (distance !== "") {
+      filteredEvents = this.filterEventsByDistance(filteredEvents)
+    }
+    if (sport !== "") {
+      filteredEvents = this.filterEventsBySportOrSkill(filteredEvents, "sport")
+    }
+    if (skill_level !== "") {
+      filteredEvents = this.filterEventsBySportOrSkill(filteredEvents, "skill_level")
+    }
+    this.props.filterEvents(filteredEvents)
   }
 
-  filterByAttending = (events) => {
+  filterEventsByDate = (events) => {
+    const filterDate = dateFormat(this.state.date, "dddd, mmmm dS")
+    return events.filter((event) => {
+      const eventFullTime = new Date(event.time)
+      const eventDate = dateFormat(eventFullTime, "dddd, mmmm dS")
+      return eventDate === filterDate
+    })
+  }
+
+  filterEventsByAttending = (events) => {
     return events.filter((event) => {
       return event.users.map(user => user.id).includes(parseInt(localStorage.getItem('pickUpUser')))
     })
   }
 
-  filterByDistance = (events) => {
+  filterEventsByDistance = (events) => {
     const { userLng, userLat } = this.props
     const distanceInMeters = parseInt(this.state.distance) * 1609.34
     return events.filter((event) => {
@@ -65,12 +90,10 @@ class EventFilter extends Component {
     })
   }
 
-  filterEventsByDropdowns = (eventsToFilter) => {
-    const { sport, skill_level } = this.state
-    const filteredEvents = eventsToFilter.filter((event) => {
-      return event.sport.includes(sport) && event.skill_level.includes(skill_level)
+  filterEventsBySportOrSkill = (events, attribute) => {
+    return events.filter((event) => {
+      return event[attribute].includes(this.state[attribute])
     })
-    this.props.filterEvents(filteredEvents)
   }
 
   clearFilter = (event) => {
@@ -78,14 +101,15 @@ class EventFilter extends Component {
     this.setState({
       sport: "",
       skill_level: "",
-      distance: false,
+      distance: "",
+      date: "",
       attending: false
     })
     this.props.filterEvents(this.props.events)
   }
 
   render() {
-    const { sport, skill_level, attending, distance } = this.state
+    const { sport, skill_level, attending, distance, date } = this.state
     return(
       <form id="event-filter-bar">
         <select className="filter-input filter-dropdown" name="sport" value={sport} onChange={this.handleChange}>
@@ -111,6 +135,16 @@ class EventFilter extends Component {
           <option>Intermediate</option>
           <option>Advanced</option>
         </select>
+        <Flatpickr
+          className="filter-input"
+          data
+          value={date}
+          options={{
+            enableTime: false,
+            dateFormat: "n/j/y",
+          }}
+          onChange={this.handleCalendarChange}
+          placeholder="Any day"/>
         <label className="filter-input attending-label">Events you're attending? </label>
         <input className="filter-input" name="attending" checked={attending ? "checked" : null} type="checkbox" onChange={this.handleClick} />
         <button className="button" id="clear-button" onClick={this.clearFilter}>Clear Filter</button>
