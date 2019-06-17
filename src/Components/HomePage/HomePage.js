@@ -1,16 +1,16 @@
 import React from 'react'
+import './HomePage.css'
 
 const HomePage = (props) => {
 
-  const {loggedIn} = props
-
   return(
     <div>
-      <h3>Welcome to Sportster!</h3>
-      <h4>The one place to go to view all of the pick-up sporting events that are going on near you!</h4>
-      {loggedIn ?
+      <h2 id="welcome-title">Welcome to Sportster!</h2>
+      <h4>Your online resource to view all pick-up sports that are happening near you, no matter where you are!</h4>
+      {localStorage.getItem('pickUpLogin') ?
         <p>In order to get started, please select from the menu above</p> :
         <p>In order to get started, please either log in or create an account above.</p>}
+      <img src="../../public/cropped-time-out-sports-favicon.ico" alt="icon" />
     </div>
   )
 }

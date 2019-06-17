@@ -11,7 +11,6 @@ class App extends Component {
   constructor() {
     super()
     this.state = {
-      loggedIn: false,
       showLogIn: false,
       showNewUserForm: false,
       userId: "",
@@ -37,13 +36,13 @@ class App extends Component {
   logIn = (userId, token) => {
     localStorage.setItem('pickUpUser', userId)
     localStorage.setItem('pickUpLogin', token)
-    this.setState({ userId, showLogIn: false, loggedIn: true })
+    this.setState({userId, showLogIn: false})
   }
 
   logOut = () => {
     localStorage.clear()
     window.location.href = "http://localhost:3001/"
-    this.setState({ loggedIn: false, userId: "", showLogIn: false })
+    this.setState({userId: "", showLogIn: false })
   }
 
   toggleShowLogIn = () => {
@@ -60,13 +59,13 @@ class App extends Component {
 
   render() {
 
-    const { loggedIn, showLogIn, showNewUserForm, userLat, userLng, userId } = this.state
+    const { showLogIn, showNewUserForm, userLat, userLng, userId } = this.state
 
     return(
       <React.Fragment>
         <header>
           <h1 className="app-name">Welcome to Sportster!</h1>
-          {!loggedIn && !showLogIn ? (
+          {!localStorage.getItem('pickUpLogin') && !showLogIn ? (
             <div className="user-credentials">
               <button className="button" onClick={this.toggleShowLogIn}>Log In</button>
               <button
@@ -124,14 +123,13 @@ class App extends Component {
               <Route
                 exact={true}
                 path="/"
-                component={() => <HomePage loggedIn={loggedIn}/>}
+                component={() => <HomePage />}
               />
               <Route
                 path="/pickups"
                 component={() => <PickUpContainer
                   userLat={userLat}
                   userLng={userLng}
-                  loggedIn={loggedIn}
                 />}
               />
               <Route
@@ -140,7 +138,6 @@ class App extends Component {
                   userLat={userLat}
                   userLng={userLng}
                   userId={userId}
-                  loggedIn={loggedIn}
                 />}
               />
             </div>

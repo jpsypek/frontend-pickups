@@ -57,12 +57,12 @@ class NewPickUpForm extends Component {
 
   render() {
     const { sport, time, skill_level, latitude, longitude } = this.state
-    const { loggedIn, userLat, userLng } = this.props
+    const { userLat, userLng } = this.props
     const API_KEY = process.env.REACT_APP_MAPS_API_KEY
 
     return (
       <React.Fragment>
-        {loggedIn ?
+        {localStorage.getItem('pickUpLogin') ?
           <div>
             <form className="new-pickup-form" onSubmit={this.handleSubmit}>
                 <select className="new-dropdown" name="sport" value={sport} onChange={this.handleChange}>

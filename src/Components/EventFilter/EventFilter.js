@@ -4,7 +4,6 @@ import getDistance from 'geolib/es/getDistance'
 import Flatpickr from 'react-flatpickr'
 import 'flatpickr/dist/themes/dark.css'
 import dateFormat from 'dateformat'
-import _ from 'lodash'
 
 class EventFilter extends Component {
   constructor(props) {

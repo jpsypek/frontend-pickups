@@ -25,7 +25,7 @@ class PickUpContainer extends Component {
   }
 
   componentDidMount = () => {
-    if (this.props.loggedIn) {
+    if (localStorage.getItem('pickUpLogin')) {
       getEventsFetch()
         .then(response => response.json())
         .then(events => this.setState({events, filteredEvents: events}))
@@ -123,7 +123,7 @@ class PickUpContainer extends Component {
   }
 
   render() {
-    const { loggedIn, userLat, userLng } = this.props
+    const { userLat, userLng } = this.props
     const { events, showEventDetail, eventForDetail, showEventEdit, filteredEvents, loading } = this.state
     const API_KEY = process.env.REACT_APP_MAPS_API_KEY
     const override = css`
@@ -143,7 +143,7 @@ class PickUpContainer extends Component {
 
     return(
       <React.Fragment >
-        { loading && loggedIn ?
+        { loading && localStorage.getItem('pickUpLogin') ?
           <div className='sweet-loading'>
             <CircleLoader
               css={override}
@@ -154,7 +154,7 @@ class PickUpContainer extends Component {
             />
           </div> :
           null }
-        {loggedIn ?
+        {localStorage.getItem('pickUpLogin') ?
           <div>
             <EventFilter
               filterEvents={this.filterEvents}
