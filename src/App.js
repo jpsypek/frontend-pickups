@@ -65,7 +65,7 @@ class App extends Component {
     return(
       <React.Fragment>
         <header>
-          <h1 className="app-name">Pick Up Sports!</h1>
+          <h1 className="app-name">Welcome to Sportster!</h1>
           {!loggedIn && !showLogIn ? (
             <div className="user-credentials">
               <button className="button" onClick={this.toggleShowLogIn}>Log In</button>

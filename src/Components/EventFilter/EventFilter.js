@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import './EventFilter.css'
-import getDistance from 'geolib/es/getDistance';
+import getDistance from 'geolib/es/getDistance'
+import Flatpickr from 'react-flatpickr'
+import 'flatpickr/dist/themes/dark.css'
 
 class EventFilter extends Component {
   constructor(props) {
@@ -9,6 +11,7 @@ class EventFilter extends Component {
       sport: "",
       skill_level: "",
       attending: false,
+      date: "",
       distance: false
     }
   }

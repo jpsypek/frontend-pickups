@@ -6,7 +6,7 @@ const HomePage = (props) => {
 
   return(
     <div>
-      <h3>Welcome to Pick-Ups!</h3>
+      <h3>Welcome to Sportster!</h3>
       <h4>The one place to go to view all of the pick-up sporting events that are going on near you!</h4>
       {loggedIn ?
         <p>In order to get started, please select from the menu above</p> :
