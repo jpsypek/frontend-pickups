@@ -26,6 +26,7 @@ class EventFilter extends Component {
     this.setState({attending: !this.state.attending}, () => {
       this.eventsToBeFiltered()
     })
+    this.props.toggleOnlyAttending()
   }
 
   eventsToBeFiltered = () => {
@@ -72,6 +73,9 @@ class EventFilter extends Component {
 
   clearFilter = (event) => {
     event.preventDefault()
+    if (this.state.attending) {
+      this.props.toggleOnlyAttending()
+    }
     this.setState({
       sport: "",
       skill_level: "",
@@ -79,6 +83,7 @@ class EventFilter extends Component {
       attending: false
     })
     this.props.filterEvents(this.props.events)
+
   }
 
   render() {
