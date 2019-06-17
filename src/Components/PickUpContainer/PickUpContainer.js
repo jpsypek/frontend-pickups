@@ -195,7 +195,7 @@ class PickUpContainer extends Component {
           <img id="star-for-explanation" alt="owned-event" src={star} /> <span className="star-explanation">Events you created</span>
         </div>
       </div> :
-        <p>You must be logged in to access this content.</p>}
+        <p className="access-message">You must be logged in to access this content.</p>}
     </React.Fragment>
     )
   }
