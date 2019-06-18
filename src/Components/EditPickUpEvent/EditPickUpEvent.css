@@ -1,11 +1,25 @@
 #edit-event-map {
   width: 90%;
-  height: 30vh;
-  margin: 0 auto;
-  z-index: 0
+  height: 22vh;
+  margin: 0.5rem auto;
+  z-index: 0;
 }
 
-input, select{
+.edit-dropdown {
+  display: inline;
+  border: 0;
+  font-size: 14px;
+  margin: 0.4rem auto;
+}
+
+.edit-input {
   display: block;
-  margin: 0 0;
+}
+
+.edit-event-calendar {
+  margin: 0.2rem auto;
+  text-align: center;
+}
+.edit-pickup-form {
+  text-align: center;
 }

@@ -6,6 +6,7 @@ import EventFilter from '../EventFilter/EventFilter'
 import PickUpEventDetails from '../PickUpEventDetails/PickUpEventDetails'
 import EditPickUpEvent from '../EditPickUpEvent/EditPickUpEvent'
 import { getEventsFetch } from '../../utility/fetch'
+import screenshot from '../../screenshot.png'
 import star from '../../markers/star.png'
 import { css } from '@emotion/core'
 import { CircleLoader } from 'react-spinners'
@@ -197,7 +198,11 @@ class PickUpContainer extends Component {
           <img id="star-for-explanation" alt="owned-event" src={star} /> <span className="star-explanation">Events you created</span>
         </div>
       </div> :
-        <p>You must be logged in to access this content.</p>}
+      <div>
+        <p>This page gives you access to all pick up sports happening nearby, with the ability to filter as needed:</p>
+        <img className="container-screenshot" src={screenshot} alt="screenshot" />
+        <p>To gain access to this page, please either log in or create an account above.</p>
+      </div>}
     </React.Fragment>
     )
   }

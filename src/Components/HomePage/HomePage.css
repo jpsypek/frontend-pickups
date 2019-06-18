@@ -1,8 +1,15 @@
-#welcome-title {
-  font-family: 'Domine', serif;
-}
+
 
 h4 {
   font-weight: normal;
   font-size: 20px;
+}
+
+.homepage-logo {
+  position: fixed;
+  transform: translate(-50%);
+  margin: 0 auto;
+  height: 6rem;
+  bottom: 0;
+  margin-bottom: 3rem;
 }

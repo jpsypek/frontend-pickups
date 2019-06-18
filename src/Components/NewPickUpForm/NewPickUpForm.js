@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import GoogleMap from 'google-map-react'
 import './NewPickUpForm.css'
 import NewPickUpMarker from '../NewPickUpMarker/NewPickUpMarker'
+import screenshot from '../../screenshot-create.png'
 import { postEventFetch, postUserEventFetch } from '../../utility/fetch'
 import Flatpickr from 'react-flatpickr'
 import 'flatpickr/dist/themes/dark.css'
@@ -109,7 +110,11 @@ class NewPickUpForm extends Component {
                 <button className="button" type="submit">Add Event</button>
             </form>
           </div> :
-          <p>You must be logged in to access this content.</p>}
+          <div>
+            <p>This page allows you to create a new pick-up game, which will be broadcast to all users:</p>
+            <img className="create-screenshot" src={screenshot} alt="screenshot" />
+            <p>To gain access to this page, please either log in or create an account above.</p>
+          </div>}
       </React.Fragment>
     )
   }

@@ -16,3 +16,8 @@
   font-size: 14px;
   margin: 0.8rem auto;
 }
+
+.create-screenshot {
+  height: 20rem;
+  border: solid;
+}

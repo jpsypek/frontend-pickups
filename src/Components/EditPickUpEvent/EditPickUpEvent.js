@@ -48,24 +48,35 @@ class EditPickUpEvent extends Component {
     return(
       <div ref="modal" className="event-modal">
         <div className="event-modal-main">
-          <form className="new-pickup-form" onSubmit={this.handleSubmit}>
-            <label>Sport</label>
-              <select name="sport" value={sport} onChange={this.handleChange}>
-                <option>Soccer</option>
-                <option>Spikeball</option>
-                <option>Basketball</option>
-                <option>Kickball</option>
-              </select>
-            <label>Event time</label>
-            <Flatpickr data-enable-time
-              value={time}
-              onChange={this.handleCalendarChange}/>
-            <label>Skill Level</label>
-              <select name="skill_level" value={skill_level} onChange={this.handleChange}>
-                <option>Beginner</option>
-                <option>Intermediate</option>
-                <option>Advanced</option>
-              </select>
+          <form className="edit-pickup-form" onSubmit={this.handleSubmit}>
+            <div className="edit-input">
+              <label className="edit-label">Sport:</label>
+                <select className="edit-dropdown" name="sport" value={sport} onChange={this.handleChange}>
+                  <option>Soccer</option>
+                  <option>Spikeball</option>
+                  <option>Basketball</option>
+                  <option>Kickball</option>
+                </select>
+            </div>
+            <div className="edit-input">
+            <label>Event time:</label>
+              <Flatpickr
+                className="edit-event-calendar edit-dropdown"
+                data-enable-time
+                value={time}
+                options={{
+                  dateFormat: "n/j/y h:i K",
+                }}
+                onChange={this.handleCalendarChange}/>
+            </div>
+            <div className="edit-input">
+              <label>Skill Level:</label>
+                <select className="edit-dropdown" name="skill_level" value={skill_level} onChange={this.handleChange}>
+                  <option>Beginner</option>
+                  <option>Intermediate</option>
+                  <option>Advanced</option>
+                </select>
+            </div>
             <div>
               <label>Please select the exact location on the map below:</label>
                 <div id="edit-event-map">

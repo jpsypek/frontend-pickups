@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import './App.css'
-import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
+import logo from './sportster-icon.ico'
 import UserLogin from './Components/UserLogin/UserLogin'
 import NewUserForm from './Components/NewUserForm/NewUserForm'
 import HomePage from './Components/HomePage/HomePage'
 import PickUpContainer from './Components/PickUpContainer/PickUpContainer'
 import NewPickUpForm from './Components/NewPickUpForm/NewPickUpForm'
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 
 class App extends Component {
   constructor() {
@@ -64,6 +65,7 @@ class App extends Component {
     return(
       <React.Fragment>
         <header>
+          <img src={logo} alt="logo" className="header-logo" />
           <h1 className="app-name">Welcome to Sportster!</h1>
           {!localStorage.getItem('pickUpLogin') && !showLogIn ? (
             <div className="user-credentials">

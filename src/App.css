@@ -7,10 +7,21 @@ body {
 
 header {
   background-color: rgb(60, 60, 60, 1);
+  display: inline;
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   z-index: 99;
+}
+
+.header-logo {
+  position: absolute;
+  height: 3rem;
+  margin: 0;
+  display: inline;
+  left: 5px;
+  top: 1rem;
 }
 
 .app-name {
