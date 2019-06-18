@@ -5,7 +5,7 @@ import UserLogin from './Components/UserLogin/UserLogin'
 import NewUserForm from './Components/NewUserForm/NewUserForm'
 import HomePage from './Components/HomePage/HomePage'
 import PickUpContainerContainer from './js/containers/PickUpContainerContainer'
-import NewPickUpForm from './Components/NewPickUpForm/NewPickUpForm'
+import NewPickUpFormContainer from './js/containers/NewPickUpFormContainer'
 import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 
 
@@ -35,7 +35,8 @@ class App extends Component {
   logIn = (userId, token) => {
     localStorage.setItem('pickUpUser', userId)
     localStorage.setItem('pickUpLogin', token)
-    this.setState({userId, showLogIn: false})
+    this.props.addUserId(userId)
+    this.setState({showLogIn: false})
   }
 
   logOut = () => {
@@ -57,9 +58,7 @@ class App extends Component {
   }
 
   render() {
-
-    const { showLogIn, showNewUserForm, userId } = this.state
-    const { userLat, userLng } = this.props
+    const { showLogIn, showNewUserForm } = this.state
 
     return(
       <React.Fragment>
@@ -132,11 +131,7 @@ class App extends Component {
               />
               <Route
                 path="/addpickup"
-                component={() => <NewPickUpForm
-                  userLat={userLat}
-                  userLng={userLng}
-                  userId={userId}
-                />}
+                component={() => <NewPickUpFormContainer />}
               />
             </div>
           </div>
@@ -145,14 +140,5 @@ class App extends Component {
     )
   }
 }
-
-// const mapDispatchToProps = (dispatch) => ({
-//   addUserLat: (userLat) => dispatch(addUserLat(userLat))
-// })
-//
-// export default connect(
-//   null,
-//   mapDispatchToProps
-// )(App)
 
 export default App

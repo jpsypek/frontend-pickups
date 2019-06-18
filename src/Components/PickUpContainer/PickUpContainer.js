@@ -59,9 +59,11 @@ class PickUpContainer extends Component {
     eventToUpdate.users = eventToUpdate.users.filter((user) => user.id !== userId)
     const unchangedEvents = this.filterUnchangedEvents(events, eventId)
     const unchangedFilteredEvents = this.filterUnchangedEvents(filteredEvents, eventId)
-    {filteredAttending
-      ? this.setStateWithoutUpdatedEvent(unchangedEvents, unchangedFilteredEvents, eventToUpdate)
-      : this.setStateWithUpdatedEvent(unchangedEvents, unchangedFilteredEvents, eventToUpdate)}
+    if (filteredAttending) {
+      this.setStateWithoutUpdatedEvent(unchangedEvents, unchangedFilteredEvents, eventToUpdate)
+    } else {
+      this.setStateWithUpdatedEvent(unchangedEvents, unchangedFilteredEvents, eventToUpdate)
+    }
   }
 
   updateEvent = (updatedEvent) => {

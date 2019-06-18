@@ -1,12 +1,13 @@
 import { connect } from 'react-redux'
-import { addUserLat } from '../actions/index'
-import { addUserLng } from '../actions/index'
+import { addUserLat, addUserLng, addUserId } from '../actions/index'
 import App from '../../App'
 
 const mapStateToProps = (state) => {
   return {
     userLat: state.userLat,
-    userLng: state.userLng}
+    userLng: state.userLng,
+    userId: state.userId
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -16,6 +17,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     addUserLng: userLng => {
       dispatch(addUserLng(userLng))
+    },
+    addUserId: userId => {
+      dispatch(addUserId(userId))
     }
   }
 }

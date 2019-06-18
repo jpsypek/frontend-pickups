@@ -136,7 +136,6 @@ class EventFilter extends Component {
         </select>
         <Flatpickr
           className="filter-input"
-          data
           value={date}
           options={{
             enableTime: false,
