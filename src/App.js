@@ -4,9 +4,10 @@ import logo from './sportster-icon.ico'
 import UserLogin from './Components/UserLogin/UserLogin'
 import NewUserForm from './Components/NewUserForm/NewUserForm'
 import HomePage from './Components/HomePage/HomePage'
-import PickUpContainer from './Components/PickUpContainer/PickUpContainer'
+import PickUpContainerContainer from './js/containers/PickUpContainerContainer'
 import NewPickUpForm from './Components/NewPickUpForm/NewPickUpForm'
 import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
+
 
 class App extends Component {
   constructor() {
@@ -14,9 +15,7 @@ class App extends Component {
     this.state = {
       showLogIn: false,
       showNewUserForm: false,
-      userId: "",
-      userLat: "",
-      userLng: ""
+      userId: ""
     }
   }
 
@@ -28,10 +27,9 @@ class App extends Component {
       )
     }
     navigator.geolocation.getCurrentPosition((position) => {
-      this.setState({
-        userLat: position.coords.latitude,
-        userLng: position.coords.longitude
-      })})
+      this.props.addUserLat(position.coords.latitude)
+      this.props.addUserLng(position.coords.longitude)
+    })
   }
 
   logIn = (userId, token) => {
@@ -60,7 +58,8 @@ class App extends Component {
 
   render() {
 
-    const { showLogIn, showNewUserForm, userLat, userLng, userId } = this.state
+    const { showLogIn, showNewUserForm, userId } = this.state
+    const { userLat, userLng } = this.props
 
     return(
       <React.Fragment>
@@ -129,10 +128,7 @@ class App extends Component {
               />
               <Route
                 path="/pickups"
-                component={() => <PickUpContainer
-                  userLat={userLat}
-                  userLng={userLng}
-                />}
+                component={() => <PickUpContainerContainer />}
               />
               <Route
                 path="/addpickup"
@@ -149,5 +145,14 @@ class App extends Component {
     )
   }
 }
+
+// const mapDispatchToProps = (dispatch) => ({
+//   addUserLat: (userLat) => dispatch(addUserLat(userLat))
+// })
+//
+// export default connect(
+//   null,
+//   mapDispatchToProps
+// )(App)
 
 export default App
