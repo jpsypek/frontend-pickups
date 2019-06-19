@@ -60,7 +60,7 @@ class EventFilter extends Component {
     if (skill_level !== "") {
       filteredEvents = this.filterEventsBySportOrSkill(filteredEvents, "skill_level")
     }
-    this.props.filterEvents(filteredEvents)
+    this.props.updateFilteredEvents(filteredEvents)
   }
 
   filterEventsByDate = (events) => {
@@ -104,7 +104,7 @@ class EventFilter extends Component {
       date: "",
       attending: false
     })
-    this.props.filterEvents(this.props.events)
+    this.props.updateFilteredEvents(this.props.events)
   }
 
   render() {
@@ -136,7 +136,6 @@ class EventFilter extends Component {
         </select>
         <Flatpickr
           className="filter-input"
-          data
           value={date}
           options={{
             enableTime: false,
@@ -145,7 +144,7 @@ class EventFilter extends Component {
           onChange={this.handleCalendarChange}
           placeholder="Any day"/>
         <label className="filter-input attending-label">Events you're attending? </label>
-        <input className="filter-input" name="attending" checked={attending ? "checked" : null} type="checkbox" onChange={this.handleClick} />
+        <input className="filter-input" name="attending" checked={attending} type="checkbox" onChange={this.handleClick} />
         <button className="button" id="clear-button" onClick={this.clearFilter}>Clear Filter</button>
       </form>
     )

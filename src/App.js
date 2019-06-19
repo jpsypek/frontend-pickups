@@ -4,19 +4,17 @@ import logo from './sportster-icon.ico'
 import UserLogin from './Components/UserLogin/UserLogin'
 import NewUserForm from './Components/NewUserForm/NewUserForm'
 import HomePage from './Components/HomePage/HomePage'
-import PickUpContainer from './Components/PickUpContainer/PickUpContainer'
-import NewPickUpForm from './Components/NewPickUpForm/NewPickUpForm'
+import PickUpContainerContainer from './js/containers/PickUpContainerContainer'
+import NewPickUpFormContainer from './js/containers/NewPickUpFormContainer'
 import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
+
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
       showLogIn: false,
-      showNewUserForm: false,
-      userId: "",
-      userLat: "",
-      userLng: ""
+      showNewUserForm: false
     }
   }
 
@@ -28,22 +26,23 @@ class App extends Component {
       )
     }
     navigator.geolocation.getCurrentPosition((position) => {
-      this.setState({
-        userLat: position.coords.latitude,
-        userLng: position.coords.longitude
-      })})
+      this.props.addUserLat(position.coords.latitude)
+      this.props.addUserLng(position.coords.longitude)
+    })
   }
 
   logIn = (userId, token) => {
     localStorage.setItem('pickUpUser', userId)
     localStorage.setItem('pickUpLogin', token)
-    this.setState({userId, showLogIn: false})
+    this.props.addUserId(userId)
+    this.setState({showLogIn: false})
   }
 
   logOut = () => {
     localStorage.clear()
     window.location.href = "http://localhost:3001/"
-    this.setState({userId: "", showLogIn: false })
+    this.props.removeUserId("")
+    this.setState({showLogIn: false })
   }
 
   toggleShowLogIn = () => {
@@ -59,8 +58,7 @@ class App extends Component {
   }
 
   render() {
-
-    const { showLogIn, showNewUserForm, userLat, userLng, userId } = this.state
+    const { showLogIn, showNewUserForm } = this.state
 
     return(
       <React.Fragment>
@@ -129,18 +127,11 @@ class App extends Component {
               />
               <Route
                 path="/pickups"
-                component={() => <PickUpContainer
-                  userLat={userLat}
-                  userLng={userLng}
-                />}
+                component={() => <PickUpContainerContainer />}
               />
               <Route
                 path="/addpickup"
-                component={() => <NewPickUpForm
-                  userLat={userLat}
-                  userLng={userLng}
-                  userId={userId}
-                />}
+                component={() => <NewPickUpFormContainer />}
               />
             </div>
           </div>

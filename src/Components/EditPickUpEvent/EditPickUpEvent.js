@@ -9,7 +9,7 @@ import 'flatpickr/dist/themes/dark.css'
 class EditPickUpEvent extends Component {
   constructor(props) {
     super(props)
-    const { sport, time, skill_level, latitude, longitude, id } = this.props
+    const { sport, time, skill_level, latitude, longitude, id } = this.props.eventForDetail
     this.state = {sport, time, skill_level, latitude, longitude, id}
   }
 
@@ -21,7 +21,7 @@ class EditPickUpEvent extends Component {
   }
 
   handleChange = (event) => {
-    const {name, value} = event.target
+    const { name, value } = event.target
     this.setState({
       [name]: value
     })
@@ -36,12 +36,15 @@ class EditPickUpEvent extends Component {
     event.preventDefault()
     patchEventFetch(this.state)
       .then(response => response.json())
-      .then(data => this.props.updateEvent(data))
+      .then(data => {
+        this.props.updateEventForDetail(data)
+        this.props.updateEvent(data)
+      })
       .catch(error => console.error(error))
     }
 
   render() {
-    const {sport, time, skill_level, latitude, longitude} = this.state
+    const { sport, time, skill_level, latitude, longitude } = this.state
     const { toggleShowEventEdit } = this.props
     const API_KEY = `${process.env.REACT_APP_MAPS_API_KEY}`
 
@@ -66,12 +69,14 @@ class EditPickUpEvent extends Component {
                 value={time}
                 options={{
                   dateFormat: "n/j/y h:i K",
+                  minDate: Date.now()
                 }}
                 onChange={this.handleCalendarChange}/>
             </div>
             <div className="edit-input">
               <label>Skill Level:</label>
                 <select className="edit-dropdown" name="skill_level" value={skill_level} onChange={this.handleChange}>
+                  <option></option>
                   <option>Beginner</option>
                   <option>Intermediate</option>
                   <option>Advanced</option>

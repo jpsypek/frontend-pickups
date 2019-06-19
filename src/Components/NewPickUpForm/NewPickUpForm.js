@@ -67,7 +67,7 @@ class NewPickUpForm extends Component {
           <div>
             <form className="new-pickup-form" onSubmit={this.handleSubmit}>
                 <select className="new-dropdown" name="sport" value={sport} onChange={this.handleChange}>
-                  <option hidden="true">Choose Sport</option>
+                  <option hidden={true}>Choose Sport</option>
                   <option disabled="disabled">Choose Sport</option>
                   <option>Soccer</option>
                   <option>Spikeball</option>
@@ -79,11 +79,12 @@ class NewPickUpForm extends Component {
                   value={time}
                   options={{
                     dateFormat: "n/j/y h:i K",
+                    minDate: Date.now()
                   }}
                   onChange={this.handleCalendarChange}
                   placeholder="Pick-up's date"/>
                   <select className="new-dropdown" name="skill_level" value={skill_level} onChange={this.handleChange}>
-                    <option hidden="true">Choose Skill Level</option>
+                    <option hidden={true}>Choose Skill Level</option>
                     <option disabled="disabled">Choose Skill Level</option>
                     <option>Beginner</option>
                     <option>Intermediate</option>

@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import GoogleMapReact from 'google-map-react'
 import './PickUpContainer.css'
 import PickUpEvent from '../PickUpEvent/PickUpEvent'
-import EventFilter from '../EventFilter/EventFilter'
-import PickUpEventDetails from '../PickUpEventDetails/PickUpEventDetails'
-import EditPickUpEvent from '../EditPickUpEvent/EditPickUpEvent'
+import EventFilterContainer from '../../js/containers/EventFilterContainer'
+import PickUpEventDetailsContainer from '../../js/containers/PickUpEventDetailsContainer'
+import EditPickUpEventContainer from '../../js/containers/EditPickUpEventContainer'
 import { getEventsFetch } from '../../utility/fetch'
 import screenshot from '../../screenshot.png'
 import star from '../../markers/star.png'
@@ -15,10 +15,7 @@ class PickUpContainer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      events: [],
-      filteredEvents: [],
       filteredAttending: false,
-      eventForDetail: {},
       showEventDetail: false,
       showEventEdit: false,
       loading: true
@@ -29,7 +26,10 @@ class PickUpContainer extends Component {
     if (localStorage.getItem('pickUpLogin')) {
       getEventsFetch()
         .then(response => response.json())
-        .then(events => this.setState({events, filteredEvents: events}))
+        .then(events => {
+          this.props.updateEvents(events)
+          this.props.updateFilteredEvents(events)
+        })
         .catch(error=>console.error(error))
     }
   }
@@ -41,12 +41,12 @@ class PickUpContainer extends Component {
   getEvents = () => {
     getEventsFetch()
       .then(response => response.json())
-      .then(events => this.setState({events}))
+      .then(events => this.props.updateEvents(events))
       .catch(error=>console.error(error))
   }
 
   updateUsers = (updatedEvent, user) => {
-    const { events, filteredEvents } = this.state
+    const { events, filteredEvents } = this.props
     const unchangedEvents = this.filterUnchangedEvents(events, updatedEvent.id)
     const unchangedFilteredEvents = this.filterUnchangedEvents(filteredEvents, updatedEvent.id)
 
@@ -54,18 +54,21 @@ class PickUpContainer extends Component {
   }
 
   removeUser = (eventId, userId) => {
-    const { events, filteredEvents, filteredAttending } = this.state
+    const { filteredAttending } = this.state
+    const { events, filteredEvents } = this.props
     const eventToUpdate = events.find((event) => event.id === eventId)
     eventToUpdate.users = eventToUpdate.users.filter((user) => user.id !== userId)
     const unchangedEvents = this.filterUnchangedEvents(events, eventId)
     const unchangedFilteredEvents = this.filterUnchangedEvents(filteredEvents, eventId)
-    {filteredAttending
-      ? this.setStateWithoutUpdatedEvent(unchangedEvents, unchangedFilteredEvents, eventToUpdate)
-      : this.setStateWithUpdatedEvent(unchangedEvents, unchangedFilteredEvents, eventToUpdate)}
+    if (filteredAttending) {
+      this.setStateWithoutUpdatedEvent(unchangedEvents, unchangedFilteredEvents, eventToUpdate)
+    } else {
+      this.setStateWithUpdatedEvent(unchangedEvents, unchangedFilteredEvents, eventToUpdate)
+    }
   }
 
   updateEvent = (updatedEvent) => {
-    const { events, filteredEvents } = this.state
+    const { events, filteredEvents } = this.props
     const unchangedEvents = this.filterUnchangedEvents(events, updatedEvent.id)
     const unchangedFilteredEvents = this.filterUnchangedEvents(filteredEvents, updatedEvent.id)
     this.setStateWithUpdatedEvent(unchangedEvents, unchangedFilteredEvents, updatedEvent)
@@ -77,40 +80,44 @@ class PickUpContainer extends Component {
   }
 
   setStateWithUpdatedEvent = (unchangedEvents, unchangedFilteredEvents, updatedEvent) => {
-    this.setState({
-      events: [...unchangedEvents, updatedEvent],
-      filteredEvents: [...unchangedFilteredEvents, updatedEvent]})
+    this.props.updateEvents([...unchangedEvents, updatedEvent])
+    this.props.updateFilteredEvents([...unchangedFilteredEvents, updatedEvent])
     this.getEvents()
-    this.filterEvents(this.state.filteredEvents)
+    // this.filterEvents(this.props.filteredEvents)
     this.toggleShowEventDetails({})
   }
 
   setStateWithoutUpdatedEvent = (unchangedEvents, unchangedFilteredEvents, updatedEvent) => {
-    this.setState({
-      events: [...unchangedEvents, updatedEvent],
-      filteredEvents: [...unchangedFilteredEvents]})
+    this.props.updateEvents([...unchangedEvents, updatedEvent])
+    this.props.updateFilteredEvents(unchangedFilteredEvents)
     this.getEvents()
-    this.filterEvents(this.state.filteredEvents)
+    // this.filterEvents(this.props.filteredEvents)
     this.toggleShowEventDetails({})
   }
 
   removeEvent = (eventId) => {
-    const { events, filteredEvents } = this.state
+    const { events, filteredEvents } = this.props
     const updatedEvents = events.filter((event) => event.id !== eventId)
     const updatedFilteredEvents = filteredEvents.filter((event) => event.id !== eventId)
 
-    this.setState({events: updatedEvents, filteredEvents: updatedFilteredEvents})
+    this.props.updateEvents(updatedEvents)
+    this.props.updateFilteredEvents(updatedFilteredEvents)
+    this.toggleShowEventDetails()
+    this.props.updateEventForDetail({})
     this.getEvents()
-    this.toggleShowEventDetails({})
   }
 
   filterEvents = (filteredEvents) => {
-    this.setState({filteredEvents})
+    this.props.updateFilteredEvents(filteredEvents)
   }
 
-  toggleShowEventDetails = (event) => {
+  displayEventDetails = (event) => {
+    this.props.updateEventForDetail(event)
+    this.toggleShowEventDetails()
+  }
+
+  toggleShowEventDetails = () => {
     this.setState({
-      eventForDetail: event,
       showEventDetail: !this.state.showEventDetail
     })
   }
@@ -124,8 +131,8 @@ class PickUpContainer extends Component {
   }
 
   render() {
-    const { userLat, userLng } = this.props
-    const { events, showEventDetail, eventForDetail, showEventEdit, filteredEvents, loading } = this.state
+    const { userLat, userLng, filteredEvents, eventForDetail } = this.props
+    const { showEventDetail, showEventEdit, loading } = this.state
     const API_KEY = process.env.REACT_APP_MAPS_API_KEY
     const override = css`
       display: block;
@@ -135,9 +142,8 @@ class PickUpContainer extends Component {
       return <PickUpEvent
         key={event.id + Date.now()}
         lat={event.latitude}
-        getEvents={this.getEvents}
         lng={event.longitude}
-        toggleShowEventDetails={this.toggleShowEventDetails}
+        displayEventDetails={this.displayEventDetails}
         event={event}
       />
     })
@@ -157,13 +163,10 @@ class PickUpContainer extends Component {
           null }
         {localStorage.getItem('pickUpLogin') ?
           <div>
-            <EventFilter
+            <EventFilterContainer
               filterEvents={this.filterEvents}
               toggleFilteredAttending={this.toggleFilteredAttending}
-              filteredEvents={filteredEvents}
-              events={events}
-              userLat={userLat}
-              userLng={userLng}/>
+            />
             <div id="events-map">
               <GoogleMapReact
                 bootstrapURLKeys={{ key: API_KEY }}
@@ -176,21 +179,21 @@ class PickUpContainer extends Component {
               >
               {eventItems}
               {showEventDetail ?
-                <PickUpEventDetails
+                <PickUpEventDetailsContainer
                   updateUsers={this.updateUsers}
                   removeUser={this.removeUser}
                   removeEvent={this.removeEvent}
                   toggleShowEventDetails={this.toggleShowEventDetails}
                   toggleShowEventEdit={this.toggleShowEventEdit}
-                  {...eventForDetail} /> :
+                /> :
                 null}
               {showEventEdit ?
-                <EditPickUpEvent
+                <EditPickUpEventContainer
                   userLat={userLat}
                   userLng={userLng}
                   toggleShowEventEdit={this.toggleShowEventEdit}
                   updateEvent={this.updateEvent}
-                  {...eventForDetail} /> :
+                 /> :
                 null}
               </GoogleMapReact>
           </div>
