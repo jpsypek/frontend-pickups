@@ -3,8 +3,8 @@ import GoogleMapReact from 'google-map-react'
 import './PickUpContainer.css'
 import PickUpEvent from '../PickUpEvent/PickUpEvent'
 import EventFilterContainer from '../../js/containers/EventFilterContainer'
-import PickUpEventDetails from '../PickUpEventDetails/PickUpEventDetails'
-import EditPickUpEvent from '../EditPickUpEvent/EditPickUpEvent'
+import PickUpEventDetailsContainer from '../../js/containers/PickUpEventDetailsContainer'
+import EditPickUpEventContainer from '../../js/containers/EditPickUpEventContainer'
 import { getEventsFetch } from '../../utility/fetch'
 import screenshot from '../../screenshot.png'
 import star from '../../markers/star.png'
@@ -16,7 +16,6 @@ class PickUpContainer extends Component {
     super(props)
     this.state = {
       filteredAttending: false,
-      eventForDetail: {},
       showEventDetail: false,
       showEventEdit: false,
       loading: true
@@ -103,17 +102,22 @@ class PickUpContainer extends Component {
 
     this.props.updateEvents(updatedEvents)
     this.props.updateFilteredEvents(updatedFilteredEvents)
+    this.toggleShowEventDetails()
+    this.props.updateEventForDetail({})
     this.getEvents()
-    this.toggleShowEventDetails({})
   }
 
   filterEvents = (filteredEvents) => {
     this.props.updateFilteredEvents(filteredEvents)
   }
 
-  toggleShowEventDetails = (event) => {
+  displayEventDetails = (event) => {
+    this.props.updateEventForDetail(event)
+    this.toggleShowEventDetails()
+  }
+
+  toggleShowEventDetails = () => {
     this.setState({
-      eventForDetail: event,
       showEventDetail: !this.state.showEventDetail
     })
   }
@@ -127,8 +131,8 @@ class PickUpContainer extends Component {
   }
 
   render() {
-    const { userLat, userLng, events, filteredEvents } = this.props
-    const { showEventDetail, eventForDetail, showEventEdit, loading } = this.state
+    const { userLat, userLng, filteredEvents, eventForDetail } = this.props
+    const { showEventDetail, showEventEdit, loading } = this.state
     const API_KEY = process.env.REACT_APP_MAPS_API_KEY
     const override = css`
       display: block;
@@ -138,9 +142,8 @@ class PickUpContainer extends Component {
       return <PickUpEvent
         key={event.id + Date.now()}
         lat={event.latitude}
-        getEvents={this.getEvents}
         lng={event.longitude}
-        toggleShowEventDetails={this.toggleShowEventDetails}
+        displayEventDetails={this.displayEventDetails}
         event={event}
       />
     })
@@ -163,9 +166,7 @@ class PickUpContainer extends Component {
             <EventFilterContainer
               filterEvents={this.filterEvents}
               toggleFilteredAttending={this.toggleFilteredAttending}
-              events={events}
-              userLat={userLat}
-              userLng={userLng}/>
+            />
             <div id="events-map">
               <GoogleMapReact
                 bootstrapURLKeys={{ key: API_KEY }}
@@ -178,21 +179,21 @@ class PickUpContainer extends Component {
               >
               {eventItems}
               {showEventDetail ?
-                <PickUpEventDetails
+                <PickUpEventDetailsContainer
                   updateUsers={this.updateUsers}
                   removeUser={this.removeUser}
                   removeEvent={this.removeEvent}
                   toggleShowEventDetails={this.toggleShowEventDetails}
                   toggleShowEventEdit={this.toggleShowEventEdit}
-                  {...eventForDetail} /> :
+                /> :
                 null}
               {showEventEdit ?
-                <EditPickUpEvent
+                <EditPickUpEventContainer
                   userLat={userLat}
                   userLng={userLng}
                   toggleShowEventEdit={this.toggleShowEventEdit}
                   updateEvent={this.updateEvent}
-                  {...eventForDetail} /> :
+                 /> :
                 null}
               </GoogleMapReact>
           </div>

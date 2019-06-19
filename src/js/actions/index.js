@@ -1,5 +1,9 @@
-import { ADD_USERLAT, ADD_USERLNG, ADD_USERID, REMOVE_USERID } from '../constants/action-types'
-import { UPDATE_EVENTS, ADD_EVENT, REMOVE_EVENT, UPDATE_FILTERED_EVENTS } from '../constants/action-types'
+import {
+  ADD_USERLAT, ADD_USERLNG, ADD_USERID,
+  REMOVE_USERID, UPDATE_EVENTS, ADD_EVENT, REMOVE_EVENT,
+  UPDATE_FILTERED_EVENTS, UPDATE_EVENT_FOR_DETAIL
+} from '../constants/action-types'
+
 
 
 export const addUserLat = (payload) => ({
@@ -39,5 +43,10 @@ export const removeEvent = (payload) => ({
 
 export const updateFilteredEvents = (payload) => ({
   type: UPDATE_FILTERED_EVENTS,
+  payload
+})
+
+export const updateEventForDetail = (payload) => ({
+  type: UPDATE_EVENT_FOR_DETAIL,
   payload
 })

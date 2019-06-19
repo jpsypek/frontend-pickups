@@ -7,7 +7,7 @@ import dateFormat from 'dateformat'
 class PickUpEventDetails extends Component {
 
   addUserToEvent = () => {
-    const { id } = this.props
+    const { id } = this.props.eventForDetail
     postUserEventFetch(id)
       .then(response => response.json())
   	  .then(data => this.props.updateUsers(data.event, data.user))
@@ -15,7 +15,7 @@ class PickUpEventDetails extends Component {
   }
 
   removeUserFromEvent = () => {
-    const { id, user_events } = this.props
+    const { id, user_events } = this.props.eventForDetail
     const userId = parseInt(localStorage.getItem("pickUpUser"))
     const user_event = user_events.find((user_event) => {
       return user_event.user_id === userId})
@@ -25,7 +25,7 @@ class PickUpEventDetails extends Component {
   }
 
   deleteEvent = () => {
-    const {id} = this.props
+    const { id } = this.props.eventForDetail
     deleteEventFetch(id)
       .then(() => this.props.removeEvent(id))
       .catch(error => console.error(error))
@@ -36,8 +36,9 @@ class PickUpEventDetails extends Component {
   }
 
   render() {
-    const { sport, skill_level, users, owner, toggleShowEventEdit } = this.props
-    const utcTime = new Date(this.props.time)
+    const { sport, skill_level, users, owner } = this.props.eventForDetail
+    const { toggleShowEventEdit } = this.props
+    const utcTime = new Date(this.props.eventForDetail.time)
     const time = dateFormat(utcTime, "h:MM TT")
     const date = dateFormat(utcTime, "dddd, mmmm dS")
     const currentUser = parseInt(localStorage.getItem("pickUpUser"))

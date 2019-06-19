@@ -79,6 +79,7 @@ class NewPickUpForm extends Component {
                   value={time}
                   options={{
                     dateFormat: "n/j/y h:i K",
+                    minDate: Date.now()
                   }}
                   onChange={this.handleCalendarChange}
                   placeholder="Pick-up's date"/>

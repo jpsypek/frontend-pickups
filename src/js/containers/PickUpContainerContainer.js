@@ -1,5 +1,8 @@
 import { connect } from 'react-redux'
-import { updateEvents, addEvent, removeEvent, updateFilteredEvents } from '../actions/index'
+import {
+  updateEvents, addEvent, removeEvent,
+  updateFilteredEvents, updateEventForDetail
+ } from '../actions/index'
 import PickUpContainer from '../../Components/PickUpContainer/PickUpContainer'
 
 const mapStateToProps = (state) => {
@@ -7,7 +10,8 @@ const mapStateToProps = (state) => {
     userLat: state.userLat,
     userLng: state.userLng,
     events: state.events,
-    filteredEvents: state.filteredEvents
+    filteredEvents: state.filteredEvents,
+    eventForDetail: state.eventForDetail
   }
 }
 
@@ -24,6 +28,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     updateFilteredEvents: events => {
       dispatch(updateFilteredEvents(events))
+    },
+    updateEventForDetail: event => {
+      dispatch(updateEventForDetail(event))
     }
   }
 }

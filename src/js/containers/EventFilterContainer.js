@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { updateEvents, addEvent, removeEvent, updateFilteredEvents } from '../actions/index'
+import { updateFilteredEvents } from '../actions/index'
 import EventFilter from '../../Components/EventFilter/EventFilter'
 
 const mapStateToProps = (state) => {
@@ -13,15 +13,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateEvents: events => {
-      dispatch(updateEvents(events))
-    },
-    addEvent: event => {
-      dispatch(addEvent(event))
-    },
-    removeEvent: eventId => {
-      dispatch(removeEvent(eventId))
-    },
     updateFilteredEvents: events => {
       dispatch(updateFilteredEvents(events))
     }
