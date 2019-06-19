@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { updateEvents, addEvent, removeEvent, updateFilteredEvents } from '../actions/index'
-import PickUpContainer from '../../Components/PickUpContainer/PickUpContainer'
+import EventFilter from '../../Components/EventFilter/EventFilter'
 
 const mapStateToProps = (state) => {
   return {
@@ -31,4 +31,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PickUpContainer)
+)(EventFilter)

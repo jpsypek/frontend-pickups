@@ -14,8 +14,7 @@ class App extends Component {
     super()
     this.state = {
       showLogIn: false,
-      showNewUserForm: false,
-      userId: ""
+      showNewUserForm: false
     }
   }
 
@@ -42,7 +41,8 @@ class App extends Component {
   logOut = () => {
     localStorage.clear()
     window.location.href = "http://localhost:3001/"
-    this.setState({userId: "", showLogIn: false })
+    this.props.removeUserId("")
+    this.setState({showLogIn: false })
   }
 
   toggleShowLogIn = () => {

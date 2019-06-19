@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { addUserLat, addUserLng, addUserId } from '../actions/index'
+import { addUserLat, addUserLng, addUserId, removeUserId } from '../actions/index'
 import App from '../../App'
 
 const mapStateToProps = (state) => {
@@ -20,6 +20,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     addUserId: userId => {
       dispatch(addUserId(userId))
+    },
+    removeUserId: userId => {
+      dispatch(removeUserId(userId))
     }
   }
 }

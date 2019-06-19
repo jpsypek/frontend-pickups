@@ -57,7 +57,6 @@ class NewPickUpForm extends Component {
   }
 
   render() {
-    console.log(this.props)
     const { sport, time, skill_level, latitude, longitude } = this.state
     const { userLat, userLng } = this.props
     const API_KEY = process.env.REACT_APP_MAPS_API_KEY
