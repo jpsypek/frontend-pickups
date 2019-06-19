@@ -87,6 +87,7 @@ class EventFilter extends Component {
         {latitude: userLat, longitude: userLng}
       ) < distanceInMeters
     })
+
   }
 
   filterEventsBySportOrSkill = (events, attribute) => {

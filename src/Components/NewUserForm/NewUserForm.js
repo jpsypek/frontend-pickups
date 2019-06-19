@@ -38,6 +38,7 @@ class NewUserForm extends Component {
     } else {
       this.setState({
         email: "",
+        password: "",
         showError: true
       })
     }

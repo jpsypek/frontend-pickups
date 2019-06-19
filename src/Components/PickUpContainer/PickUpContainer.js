@@ -131,7 +131,7 @@ class PickUpContainer extends Component {
   }
 
   render() {
-    const { userLat, userLng, filteredEvents, eventForDetail } = this.props
+    const { userLat, userLng, filteredEvents } = this.props
     const { showEventDetail, showEventEdit, loading } = this.state
     const API_KEY = process.env.REACT_APP_MAPS_API_KEY
     const override = css`

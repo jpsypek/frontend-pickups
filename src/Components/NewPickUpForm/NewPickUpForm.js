@@ -42,6 +42,9 @@ class NewPickUpForm extends Component {
   }
 
   handleSubmit = (event) => {
+    if (this.state.time === "") {
+      alert("Please enter a date")
+    }
     event.preventDefault()
     postEventFetch(this.state)
       .then(response => response.json())
@@ -59,6 +62,7 @@ class NewPickUpForm extends Component {
   render() {
     const { sport, time, skill_level, latitude, longitude } = this.state
     const { userLat, userLng } = this.props
+    const disabled = time === "" || latitude === "" || longitude === ""
     const API_KEY = process.env.REACT_APP_MAPS_API_KEY
 
     return (
@@ -108,7 +112,12 @@ class NewPickUpForm extends Component {
                     </GoogleMap>
                   </div>
                 </div>
-                <button className="button" type="submit">Add Event</button>
+                <button
+                  disabled={disabled}
+                  className={disabled ? "diabled-button" : "button"}
+                  type="submit">
+                Add Event
+              </button>
             </form>
           </div> :
           <div>
