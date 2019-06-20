@@ -78,6 +78,13 @@ class NewPickUpForm extends Component {
                   <option>Basketball</option>
                   <option>Kickball</option>
                 </select>
+                <select className="new-dropdown" name="skill_level" value={skill_level} onChange={this.handleChange}>
+                  <option hidden={true}>Choose Skill Level</option>
+                  <option disabled="disabled">Choose Skill Level</option>
+                  <option>Beginner</option>
+                  <option>Intermediate</option>
+                  <option>Advanced</option>
+                </select>
                 <Flatpickr
                   data-enable-time
                   value={time}
@@ -87,13 +94,6 @@ class NewPickUpForm extends Component {
                   }}
                   onChange={this.handleCalendarChange}
                   placeholder="Pick-up's date"/>
-                  <select className="new-dropdown" name="skill_level" value={skill_level} onChange={this.handleChange}>
-                    <option hidden={true}>Choose Skill Level</option>
-                    <option disabled="disabled">Choose Skill Level</option>
-                    <option>Beginner</option>
-                    <option>Intermediate</option>
-                    <option>Advanced</option>
-                  </select>
                 <div>
                   <label>Please select the exact location on the map below:</label>
                   <div id="new-event-map">
@@ -103,7 +103,7 @@ class NewPickUpForm extends Component {
                       defaultCenter={{
                       lat: userLat,
                       lng: userLng}}
-                      defaultZoom={13}
+                      defaultZoom={10}
                       yesIWantToUseGoogleMapApiInternals
                     >
                       {latitude && longitude ?

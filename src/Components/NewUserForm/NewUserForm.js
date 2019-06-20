@@ -66,7 +66,7 @@ class NewUserForm extends Component {
                 <input className="modal-input" type="password" name="password" onChange={this.handleChange} value={password} />
                 <button className="button modal-button" type="submit">Create Account</button>
               </form>
-              {showError ? <p>Invalid username, please try again</p> : null}
+              {showError ? <p>Invalid username, please try again.</p> : null}
               <button className="button modal-button" onClick={toggleShowNewUserForm}>Close</button>
             </div>
           </div> :

@@ -4,10 +4,12 @@
   right: 0rem;
   top: 0rem;
   width: 10rem;
-  height: 8.2rem;
+  height: 8rem;
   background-color: rgb(80, 80, 80, 1);
   border-radius: 15px;
-  border-color: inherit;
+  border: solid;
+  border-width: 2px;
+  border-color: rgb(200, 200, 200, 1);
 }
 
 #email-login, #password-login {
@@ -16,22 +18,11 @@
   margin: 6.5px;
 }
 
-#login-button {
-  display: inline;
-}
-
-#create-user-button {
-  display: inline
-}
-
-span {
-  display: inline;
-}
 
 #error {
   position: fixed;
   right: 0.5rem;
-  top: 2.9rem;
+  top: 8rem;
   color: red;
   font-size: 1rem;
 }
