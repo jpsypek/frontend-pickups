@@ -47,7 +47,7 @@ class App extends Component {
 
   logOut = () => {
     localStorage.clear()
-    window.location.href = "http://localhost:3001/"
+    window.location.href = "https://sportster-frontend.herokuapp.com"
     this.props.removeUserId("")
     this.setState({showLogIn: false })
   }
