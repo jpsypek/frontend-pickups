@@ -37,7 +37,8 @@ export const postUserEventFetch = (eventId) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Accept: 'application/json'
+      Accept: 'application/json',
+      Authorization: `Bearer ${localStorage.getItem("pickUpLogin")}`
     },
     body: JSON.stringify({
       user_event: {
