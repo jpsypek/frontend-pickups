@@ -42,9 +42,6 @@ class NewPickUpForm extends Component {
   }
 
   handleSubmit = (event) => {
-    if (this.state.time === "") {
-      alert("Please enter a date")
-    }
     event.preventDefault()
     postEventFetch(this.state)
       .then(response => response.json())
