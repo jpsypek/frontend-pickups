@@ -14,6 +14,7 @@ You may also view the live version of the application at https://sportster-front
 To get started here, please either create an account or use the following credentials-
 
 Username: demo@gmail.com
+
 Password: password
 
 ## Authors
