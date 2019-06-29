@@ -56,7 +56,7 @@ class NewPickUpForm extends Component {
     postUserEventFetch(eventId)
       .then(response => response.json())
       .catch(error => console.error(error))
-    window.location.href = "http://localhost:3001/pickups"
+    window.location.href = "https://sportster-frontend.herokuapp.com/pickups"
   }
 
   render() {
