@@ -1,5 +1,5 @@
 export const patchEventFetch = (event) => {
-  return fetch(`http://localhost:3000/api/v1/events/${event.id}`, {
+  return fetch(`https://sportster-backend.herokuapp.com/api/v1/events/${event.id}`, {
     method: "PATCH",
     headers: {
         "Content-Type": "application/json",
@@ -10,7 +10,7 @@ export const patchEventFetch = (event) => {
 }
 
 export const postEventFetch = (event) => {
-  return fetch(`http://localhost:3000/api/v1/events`, {
+  return fetch(`https://sportster-backend.herokuapp.com/api/v1/events`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export const postEventFetch = (event) => {
 }
 
 export const deleteEventFetch = (id) => {
-  return fetch(`http://localhost:3000/api/v1/events/${id}`, {
+  return fetch(`https://sportster-backend.herokuapp.com/api/v1/events/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export const deleteEventFetch = (id) => {
 }
 
 export const postUserEventFetch = (eventId) => {
-  return fetch('http://localhost:3000/api/v1/user_events', {
+  return fetch('https://sportster-backend.herokuapp.com/api/v1/user_events', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export const postUserEventFetch = (eventId) => {
 }
 
 export const deleteUserEventFetch = (id) => {
-  return fetch(`http://localhost:3000/api/v1/user_events/${id}`, {
+  return fetch(`https://sportster-backend.herokuapp.com/api/v1/user_events/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ export const deleteUserEventFetch = (id) => {
 }
 
 export const postUserFetch = (email, password, first_name, last_name, bio) => {
-  return fetch('http://localhost:3000/api/v1/users', {
+  return fetch('https://sportster-backend.herokuapp.com/api/v1/users', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ export const postUserFetch = (email, password, first_name, last_name, bio) => {
 }
 
 export const getEventsFetch = () => {
-  return fetch('http://localhost:3000/api/v1/events', {
+  return fetch('https://sportster-backend.herokuapp.com/api/v1/events', {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
@@ -90,7 +90,7 @@ export const getEventsFetch = () => {
 }
 
 export const postLoginFetch = (email, password) => {
-  return fetch('http://localhost:3000/api/v1/login', {
+  return fetch('https://sportster-backend.herokuapp.com/api/v1/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

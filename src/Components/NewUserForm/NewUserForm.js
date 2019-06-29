@@ -47,7 +47,8 @@ class NewUserForm extends Component {
   render() {
     const { showNewUserForm, toggleShowNewUserForm } = this.props
     const { email, password, first_name, last_name, bio, showError } = this.state
-
+    const disabled = email === "" || password === ""
+    
     return(
       <React.Fragment>
         {showNewUserForm ?
@@ -64,7 +65,12 @@ class NewUserForm extends Component {
                 <input className="modal-input" name="email" onChange={this.handleChange} value={email} />
                 <label className="modal-label">Password:</label>
                 <input className="modal-input" type="password" name="password" onChange={this.handleChange} value={password} />
-                <button className="button modal-button" type="submit">Create Account</button>
+                <button
+                  disabled={disabled}
+                  className={disabled ? "diabled-button modal-button" : "button modal-button"}
+                  type="submit">
+                  Create Account
+                </button>
               </form>
               {showError ? <p>Invalid username, please try again.</p> : null}
               <button className="button modal-button" onClick={toggleShowNewUserForm}>Close</button>
