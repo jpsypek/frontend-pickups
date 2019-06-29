@@ -101,9 +101,8 @@ class NewPickUpForm extends Component {
                       onClick={this.handleMapClick}
                       bootstrapURLKeys={{ key: API_KEY }}
                       defaultCenter={{
-                        lat: {userLat ? userLat : 39.756602},
-                        lng: {userLng ? : -105.006282}
-                      }}
+                      lat: userLat,
+                      lng: userLng}}
                       defaultZoom={10}
                       yesIWantToUseGoogleMapApiInternals
                     >
