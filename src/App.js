@@ -25,10 +25,17 @@ class App extends Component {
         localStorage.getItem('pickUpLogin')
       )
     }
-    navigator.geolocation.getCurrentPosition((position) => {
-      this.props.addUserLat(position.coords.latitude)
-      this.props.addUserLng(position.coords.longitude)
-    })
+    navigator.geolocation.getCurrentPosition(this.onLocationSuccess, this.onLocationFailure)
+  }
+
+  onLocationSuccess = (position) => {
+    this.props.addUserLat(position.coords.latitude)
+    this.props.addUserLng(position.coords.longitude)
+  }
+
+  onLocationFailure = () => {
+    this.props.addUserLat(39.756602)
+    this.props.addUserLng(-105.006282)
   }
 
   logIn = (userId, token) => {
