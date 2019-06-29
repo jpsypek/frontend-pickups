@@ -19,10 +19,10 @@ Password: password
 
 ## Authors
 
-* **Jack Sypek**
+**Jack Sypek**
 
 ## Acknowledgments
 
-* Hat tip
+**Hat tip**
 
 I'd like to thank all of the Flatiron instructors for providing me feedback and helping steer me in the right direction at various points, and all of the Denver[0] cohort for helping trouble shoot and keeping work-mode fun.
