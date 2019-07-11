@@ -8,7 +8,7 @@ Sportster is an online resource to create and view all pick-up sports that are h
 2. run rails db:create to create the Postgres db
 3. run rails s to run the backend server
 4. git clone the frontend repository (https://github.com/jpsypek/backend-pickups)
-5. run npm start to the frontend server
+5. run npm start to the frontend server 
 
 You may also view the live version of the application at https://sportster-frontend.herokuapp.com/.
 To get started here, please either create an account or use the following credentials-
