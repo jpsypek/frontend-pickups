@@ -83,7 +83,6 @@ class PickUpContainer extends Component {
     this.props.updateEvents([...unchangedEvents, updatedEvent])
     this.props.updateFilteredEvents([...unchangedFilteredEvents, updatedEvent])
     this.getEvents()
-    // this.filterEvents(this.props.filteredEvents)
     this.toggleShowEventDetails({})
   }
 
@@ -91,7 +90,6 @@ class PickUpContainer extends Component {
     this.props.updateEvents([...unchangedEvents, updatedEvent])
     this.props.updateFilteredEvents(unchangedFilteredEvents)
     this.getEvents()
-    // this.filterEvents(this.props.filteredEvents)
     this.toggleShowEventDetails({})
   }
 
