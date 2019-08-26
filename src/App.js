@@ -39,8 +39,8 @@ class App extends Component {
   }
 
   logIn = (userId, token) => {
-    localStorage.setItem('pickUpUser', userId)
-    localStorage.setItem('pickUpLogin', token)
+    // localStorage.setItem('pickUpUser', userId)
+    // localStorage.setItem('pickUpLogin', token)
     this.props.addUserId(userId)
     this.setState({showLogIn: false})
   }
